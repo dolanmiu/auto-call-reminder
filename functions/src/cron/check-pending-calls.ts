@@ -38,7 +38,8 @@ export const checkPendingCalls = functions.pubsub
           .get();
 
         if (callDoc.size > 0) {
-          const call = callDoc.docs[0].data() as Call;
+          const call =
+            callDoc.docs[0].data() as Call<FirebaseFirestore.Timestamp>;
           if (call.createdAt.toDate() < date) {
             await makeCall(callConfig.toNumber);
           }
