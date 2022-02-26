@@ -27,7 +27,7 @@ export const writeCall = functions
       return;
     }
 
-    const call: Call = {
+    const call: Call<FirebaseFirestore.Timestamp> = {
       createdAt: admin.firestore.Timestamp.now(),
       status: callInstance.status,
     };

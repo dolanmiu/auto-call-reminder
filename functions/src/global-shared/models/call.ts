@@ -1,4 +1,4 @@
-export interface Call {
-  readonly createdAt: FirebaseFirestore.Timestamp;
+export interface Call<T> {
+  readonly createdAt: T;
   readonly status: string;
 }
