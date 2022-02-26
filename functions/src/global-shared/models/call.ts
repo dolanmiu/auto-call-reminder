@@ -1,6 +1,4 @@
-import { Timestamp } from "firebase/firestore";
-
 export interface Call {
-  readonly createdAt: Timestamp;
+  readonly createdAt: FirebaseFirestore.Timestamp;
   readonly status: string;
 }

@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import { Timestamp } from "firebase/firestore";
+// import { Timestamp } from "firebase/firestore";
 
 import { Call, getCallsCollection } from "../global-shared";
 import { CallInstance } from "twilio/lib/rest/api/v2010/account/call";
@@ -28,7 +28,7 @@ export const writeCall = functions
     }
 
     const call: Call = {
-      createdAt: Timestamp.now(),
+      createdAt: admin.firestore.Timestamp.now(),
       status: callInstance.status,
     };
 

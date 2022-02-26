@@ -18,7 +18,7 @@ export const makeCall = async (toNumber: string) => {
     {
       loop: 10,
     },
-    "https://api.twilio.com/cowbell.mp3"
+    "https://api.twilio.com/cowbell.mp3",
   );
 
   response.record({
@@ -35,13 +35,15 @@ export const makeCall = async (toNumber: string) => {
         to: toNumber,
         from: "+447488880401",
         record: true,
+        statusCallback: "`https://phone-scheduler.firebaseapp.com/make-call`",
+        statusCallbackMethod: "POST",
       });
       console.log(call);
 
-      setInterval(async () => {
-        //   console.log(client.calls..get(call.sid));
-        console.log(await client.calls.list({ limit: 10 }));
-      }, 1000);
+      // setInterval(async () => {
+      //   //   console.log(client.calls..get(call.sid));
+      //   console.log(await client.calls.list({ limit: 10 }));
+      // }, 1000);
     } catch (e) {
       console.log(e);
     }
