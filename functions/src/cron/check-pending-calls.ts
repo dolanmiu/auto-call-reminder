@@ -13,7 +13,7 @@ import { makeCall } from "../util";
 
 export const checkPendingCalls = functions.pubsub
   .schedule("every 5 minutes")
-  .onRun(async (context) => {
+  .onRun(async () => {
     const users = await admin.firestore().collection(USER_COLLECTION).get();
 
     for (const user of users.docs) {
