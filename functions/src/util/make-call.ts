@@ -1,6 +1,4 @@
 import * as functions from "firebase-functions";
-// import * as admin from "firebase-admin";
-// import { HttpsError } from "firebase-functions/lib/providers/https";
 // Download the helper library from https://www.twilio.com/docs/node/install
 // Find your Account SID and Auth Token at twilio.com/console
 // and set the environment variables. See http://twil.io/secure
@@ -8,9 +6,9 @@ import * as twilio from "twilio";
 
 const accountSid = functions.config().TWILIO_ACCOUNT_SID;
 const authToken = functions.config().TWILIO_AUTH_TOKEN;
-const client = twilio(accountSid, authToken);
 
 export const makeCall = async (toNumber: string): Promise<void> => {
+  const client = twilio(accountSid, authToken);
   const { VoiceResponse } = twilio.twiml;
 
   const response = new VoiceResponse();
