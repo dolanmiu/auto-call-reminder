@@ -1,4 +1,13 @@
 {
+  "targets": {
+    "phone-scheduler": {
+      "hosting": {
+        "spa": [
+          "phone-scheduler"
+        ]
+      }
+    }
+  },
   "projects": {
     "default": "phone-scheduler"
   }

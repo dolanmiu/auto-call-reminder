@@ -1,9 +1,23 @@
+import { Environment } from './environment-type';
+import { FIREBASE_SDK_CONFIG } from './firebase.conf';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false
+export const environment: Environment = {
+  production: false,
+  firebase: {
+    projectId: 'phone-scheduler',
+    appId: '1:705171398397:web:abe32957269b45c0862894',
+    storageBucket: 'phone-scheduler.appspot.com',
+    locationId: 'europe-west',
+    apiKey: 'AIzaSyCMslVeC62ecvtzsC-LLXEngfAv7SKYp4k',
+    authDomain: 'phone-scheduler.firebaseapp.com',
+    messagingSenderId: '705171398397',
+    measurementId: 'G-SYNJCZTPWN',
+  },
+  brandName: 'Phone Scheduler',
 };
 
 /*

@@ -18,10 +18,14 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ]
+    "lib": ["es2020", "dom"],
+    "paths": {
+      "@models": ["../functions/src/global-shared/models/index"],
+      "@constants": ["../functions/src/global-shared/constants/index"],
+      "@util": ["../functions/src/global-shared/util/index"],
+      "@common": ["./spa-common/index"],
+      "@shared": ["./src/app/shared/index"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
