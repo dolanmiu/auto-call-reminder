@@ -38,8 +38,8 @@ jobs:
         run: npm ci
       - name: Prettier
         run: npm run prettier
-      - name: Test
-        run: npm run test
+      - name: Lint
+        run: npm run lint
   functions:
     name: Deploy 🚀
     needs: [test, build]
