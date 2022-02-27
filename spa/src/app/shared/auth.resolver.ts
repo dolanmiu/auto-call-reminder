@@ -1,16 +1,17 @@
+import { Auth, User, user } from '@angular/fire/auth';
+import { filter, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import {
-  Router, Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot
-} from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Resolve } from '@angular/router';
+
+import { notEmpty } from '@util';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthResolver implements Resolve<boolean> {
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return of(true);
+export class AuthResolver implements Resolve<User> {
+  public constructor(private readonly afAuth: Auth) {}
+  public resolve(): Observable<User> {
+    return user(this.afAuth).pipe(filter(notEmpty), take(1));
   }
 }

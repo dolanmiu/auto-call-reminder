@@ -15,3 +15,9 @@ export const getCallsCollection = (
   userUid: string,
   callConfigUid: string,
 ): string => `${getCallConfigDocument(userUid, callConfigUid)}/calls`;
+
+export const getCallDocument = (
+  userUid: string,
+  callConfigUid: string,
+  callUid: string,
+): string => `${getCallsCollection(userUid, callConfigUid)}/${callUid}`;

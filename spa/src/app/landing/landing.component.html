@@ -1,1 +1,22 @@
 <p>landing works!</p>
+<ng-container *ngIf="callConfigs$ | async as callConfigs">
+  <div *ngFor="let callConfig of callConfigs">test</div>
+</ng-container>
+
+<form [formGroup]="createCallConfigForm" (ngSubmit)="createCallConfig()">
+  <input
+    formControlName="cron"
+    class="p-2 border rounded-md"
+    type="text"
+    placeholder="e.g. Every sunday at 7pm"
+  />
+  <input
+    formControlName="toNumber"
+    class="p-2 border rounded-md"
+    type="text"
+    placeholder="Has to begin with the region code: +44 etc. No spaces!"
+  />
+  <button type="submit">Create Config</button>
+</form>
+
+{{ cron$ | async }}

@@ -14,8 +14,15 @@ jobs:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm ci && npm run build
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: |
+          npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+          npm config set '//npm.fontawesome.com/:_authToken' "${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}"
+          npm ci
+      - name: Build
+        run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    console.log('logging in', this.loginForm.value);
     await this.authService.emailSignin(
       this.loginForm.get('username')?.value,
       this.loginForm.get('password')?.value
