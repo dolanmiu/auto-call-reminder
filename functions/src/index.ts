@@ -6,3 +6,4 @@ admin.initializeApp({
 
 export * from "./user";
 export * from "./cron";
+export * from "./endpoint";
