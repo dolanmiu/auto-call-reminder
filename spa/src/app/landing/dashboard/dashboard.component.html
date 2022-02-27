@@ -1,5 +1,8 @@
 <ng-container *ngIf="callConfigs$ | async as callConfigs">
-  <div *ngFor="let callConfig of callConfigs">
+  <div class="flex space-x-2" *ngFor="let callConfig of callConfigs">
+    <div class="cursor-pointer" [routerLink]="['/call-configs', callConfig.id]">
+      {{ callConfig.data().cron }} {{ callConfig.data().toNumber }}
+    </div>
     <button
       class="p-2 bg-red-500 rounded border border-red-700 text-white"
       (click)="deleteCallConfig(callConfig)"
