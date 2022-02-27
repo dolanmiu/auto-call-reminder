@@ -1,3 +1,16 @@
 <p>login works!</p>
-<input class="p-2 border rounded-md" type="text" placeholder="Username" />
-<input class="p-2 border rounded-md" type="password" placeholder="Password" />
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <input
+    formControlName="username"
+    class="p-2 border rounded-md"
+    type="text"
+    placeholder="Username"
+  />
+  <input
+    formControlName="password"
+    class="p-2 border rounded-md"
+    type="password"
+    placeholder="Password"
+  />
+  <button type="submit">Login</button>
+</form>
