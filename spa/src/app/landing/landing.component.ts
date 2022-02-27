@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 import {
   CollectionReference,
   Firestore,
-  collectionData,
+  QueryDocumentSnapshot,
   addDoc,
+  collectionSnapshots,
+  doc,
+  deleteDoc,
 } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +24,7 @@ const getCronString = require('@darkeyedevelopers/natural-cron.js');
   styleUrls: ['./landing.component.scss'],
 })
 export class LandingComponent {
-  public readonly callConfigs$: Observable<CallConfig[]>;
+  public readonly callConfigs$: Observable<QueryDocumentSnapshot<CallConfig>[]>;
   public readonly createCallConfigForm: FormGroup;
   public readonly cron$: Observable<string>;
   private readonly callConfigCollectionReference: CollectionReference<CallConfig>;
@@ -34,7 +37,7 @@ export class LandingComponent {
       user.uid
     );
 
-    this.callConfigs$ = collectionData(this.callConfigCollectionReference);
+    this.callConfigs$ = collectionSnapshots(this.callConfigCollectionReference);
 
     this.createCallConfigForm = fb.group({
       cron: [
@@ -58,13 +61,15 @@ export class LandingComponent {
       return;
     }
 
-    console.log('working');
-
-    return;
-
     addDoc(this.callConfigCollectionReference, {
       cron: this.createCallConfigForm.value.cron,
       toNumber: this.createCallConfigForm.value.toNumber,
     });
+  }
+
+  public async deleteCallConfig(
+    snapshot: QueryDocumentSnapshot<CallConfig>
+  ): Promise<void> {
+    await deleteDoc(doc(this.callConfigCollectionReference, snapshot.id));
   }
 }

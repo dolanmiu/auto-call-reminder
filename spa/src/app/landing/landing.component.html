@@ -1,6 +1,13 @@
 <p>landing works!</p>
 <ng-container *ngIf="callConfigs$ | async as callConfigs">
-  <div *ngFor="let callConfig of callConfigs">test</div>
+  <div *ngFor="let callConfig of callConfigs">
+    <button
+      class="p-2 bg-red-500 rounded border border-red-700 text-white"
+      (click)="deleteCallConfig(callConfig)"
+    >
+      Delete <i class="fa-thin fa-trash-can"></i>
+    </button>
+  </div>
 </ng-container>
 
 <form [formGroup]="createCallConfigForm" (ngSubmit)="createCallConfig()">
