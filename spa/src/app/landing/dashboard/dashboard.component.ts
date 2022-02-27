@@ -10,7 +10,7 @@ import {
 } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'firebase/auth';
+import { User } from '@angular/fire/auth';
 import { map, Observable } from 'rxjs';
 
 import { getCallConfigCollectionReference, notIdenticalTo } from '@common';
