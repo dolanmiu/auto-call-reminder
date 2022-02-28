@@ -1,12 +1,10 @@
 <ng-container *ngIf="callConfigs$ | async as callConfigs">
   <div class="flex space-x-2" *ngFor="let callConfig of callConfigs">
     <div class="cursor-pointer" [routerLink]="['/call-configs', callConfig.id]">
-      {{ callConfig.data().cron }} {{ callConfig.data().toNumber }}
+      {{ callConfig.data().cron }} ({{ callConfig.data().cron | naturalCron }})
+      {{ callConfig.data().toNumber }}
     </div>
-    <button
-      class="p-2 bg-red-500 rounded border border-red-700 text-white"
-      (click)="deleteCallConfig(callConfig)"
-    >
+    <button class="button-warning" (click)="deleteCallConfig(callConfig)">
       Delete <i class="fa-thin fa-trash-can"></i>
     </button>
   </div>
@@ -25,7 +23,9 @@
     type="text"
     placeholder="Has to begin with the region code: +44 etc. No spaces!"
   />
-  <button type="submit">Create Config</button>
+  <button class="button-primary" type="submit">Create Config</button>
 </form>
 
-{{ cron$ | async }}
+<div *ngIf="cron$ | async as cron">
+  {{ cron | naturalCron }}
+</div>

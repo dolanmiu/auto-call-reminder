@@ -31,6 +31,13 @@ export const testCall = functions
 
       const callConfig = callConfigSnapshot.data() as CallConfig;
 
-      await makeCall(callConfig.toNumber);
+      console.log("Calling witg CallConfig:", callConfig);
+
+      try {
+        await makeCall(callConfig.toNumber);
+      } catch (e) {
+        console.log(e);
+        res.status(500).send(e);
+      }
     });
   });

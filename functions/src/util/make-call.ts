@@ -4,10 +4,11 @@ import * as functions from "firebase-functions";
 // and set the environment variables. See http://twil.io/secure
 import * as twilio from "twilio";
 
-const accountSid = functions.config().TWILIO_ACCOUNT_SID;
-const authToken = functions.config().TWILIO_AUTH_TOKEN;
-
 export const makeCall = async (toNumber: string): Promise<void> => {
+  const accountSid = functions.config().TWILIO_ACCOUNT_SID;
+  const authToken = functions.config().TWILIO_AUTH_TOKEN;
+  console.log("Twilio credentials", accountSid, authToken);
+
   const client = twilio(accountSid, authToken);
   const { VoiceResponse } = twilio.twiml;
 

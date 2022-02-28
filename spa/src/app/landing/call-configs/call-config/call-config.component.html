@@ -1,9 +1,9 @@
 <p>call-config works!</p>
 <div *ngIf="callConfig$ | async as callConfig">
-  <h1>{{ callConfig.cron }}</h1>
+  <h1>{{ callConfig.cron }} ({{ callConfig.cron | naturalCron }})</h1>
   <p>{{ callConfig.toNumber }}</p>
 </div>
-<button (click)="testCall()">Test Call</button>
+<button class="button-primary" (click)="testCall()">Test Call</button>
 <ng-container *ngIf="calls$ | async as calls">
   <div *ngFor="let call of calls">{{ call | json }}</div>
 </ng-container>

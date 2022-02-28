@@ -11,6 +11,9 @@ import {
 } from "../global-shared";
 import { makeCall } from "../util";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const getCronString = require("@darkeyedevelopers/natural-cron.js");
+
 export const checkPendingCalls = functions.pubsub
   .schedule("every 5 minutes")
   .onRun(async () => {
@@ -25,7 +28,7 @@ export const checkPendingCalls = functions.pubsub
       for (const callConfigDoc of callConfigs.docs) {
         const callConfig = callConfigDoc.data() as CallConfig;
         const cronInstance = new Cron();
-        cronInstance.fromString(callConfig.cron);
+        cronInstance.fromString(getCronString(callConfig.cron));
         const schedule = cronInstance.schedule();
         const date = schedule.prev().toDate();
 

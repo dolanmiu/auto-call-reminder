@@ -15,8 +15,6 @@ import { map, Observable } from 'rxjs';
 
 import { getCallConfigCollectionReference, notIdenticalTo } from '@common';
 import { CallConfig } from '@models';
-
-const getCronString = require('@darkeyedevelopers/natural-cron.js');
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -50,8 +48,7 @@ export class DashboardComponent {
     });
 
     this.cron$ = this.createCallConfigForm.valueChanges.pipe(
-      map((f) => f.cron),
-      map((c) => getCronString(c))
+      map((f) => f.cron)
     );
   }
 

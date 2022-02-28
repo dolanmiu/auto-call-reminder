@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { SharedModule } from '@shared';
+
 import { CallConfigRoutingModule } from './call-config-routing.module';
 import { CallConfigComponent } from './call-config.component';
 
@@ -13,6 +15,7 @@ import { CallConfigComponent } from './call-config.component';
     CallConfigRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    SharedModule,
   ],
 })
 export class CallConfigModule {}
