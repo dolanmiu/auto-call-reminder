@@ -11,8 +11,8 @@ export const testCall = functions
   .region("europe-west2")
   .https.onRequest(async (req, res) => {
     cors(req, res, async () => {
-      const callConfigUid = req.body.callConfigUid as string | undefined;
-      const userUid = req.body.userUid as string | undefined;
+      const callConfigUid = req.query.callConfigUid as string | undefined;
+      const userUid = req.query.userUid as string | undefined;
 
       if (!callConfigUid) {
         res.status(400).send("No Call Config UID found");
