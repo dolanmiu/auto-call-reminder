@@ -33,7 +33,8 @@ export const makeCall = async (toNumber: string): Promise<void> => {
         to: toNumber,
         from: "+447488880401",
         record: true,
-        statusCallback: "https://phone-scheduler.firebaseapp.com/make-call",
+        statusCallback:
+          "https://europe-west2-phone-scheduler.cloudfunctions.net/writeCall",
         statusCallbackMethod: "POST",
       });
       console.log(call);

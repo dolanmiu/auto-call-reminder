@@ -4,19 +4,19 @@ import {
   CollectionReference,
   Firestore,
   collectionData,
-  collectionSnapshots,
+  docData,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '@angular/fire/auth';
 import { Timestamp } from 'firebase/firestore';
+import { HttpClient } from '@angular/common/http';
 
 import { CallConfig, Call } from '@models';
 import {
   getCallCollectionReference,
   getCallConfigDocumentReference,
 } from '@common';
-import { docData } from 'rxfire/firestore';
 
 @Component({
   selector: 'app-call-config',
@@ -27,29 +27,49 @@ export class CallConfigComponent {
   public readonly calls$: Observable<Call<Timestamp>[]>;
   public readonly callConfig$: Observable<CallConfig>;
   public readonly createAudioForm: FormGroup;
+  public makingCall = false;
   private readonly callCollectionReference: CollectionReference<
     Call<Timestamp>
   >;
+  private readonly callConfigUid: string;
+  private readonly user: User;
 
-  constructor(route: ActivatedRoute, firestore: Firestore, fb: FormBuilder) {
-    const callConfigUid = route.parent?.snapshot.paramMap.get(
+  constructor(
+    route: ActivatedRoute,
+    firestore: Firestore,
+    fb: FormBuilder,
+    private readonly http: HttpClient
+  ) {
+    this.callConfigUid = route.parent?.snapshot.paramMap.get(
       'callConfigUid'
     ) as string;
-    const user = route.snapshot.data['user'] as User;
+    this.user = route.snapshot.data['user'] as User;
 
     this.callConfig$ = docData(
-      getCallConfigDocumentReference(firestore, user.uid, callConfigUid)
+      getCallConfigDocumentReference(firestore, this.user.uid, this.callConfigUid)
     );
 
     this.callCollectionReference = getCallCollectionReference(
       firestore,
-      user.uid,
-      callConfigUid
+      this.user.uid,
+      this.callConfigUid
     );
 
     this.calls$ = collectionData(this.callCollectionReference);
     this.createAudioForm = fb.group({
       audio: [''],
     });
+  }
+
+  public testCall(): void {
+    this.makingCall = true;
+    this.http
+      .get(
+        `https://europe-west2-phone-scheduler.cloudfunctions.net/testCall?callConfigUid=${this.callConfigUid}&userUid=${this.user.uid}`
+      )
+      .pipe(take(1))
+      .subscribe(() => {
+        this.makingCall = false;
+      });
   }
 }
