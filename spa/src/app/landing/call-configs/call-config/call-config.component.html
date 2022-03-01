@@ -3,7 +3,7 @@
   <h1>{{ callConfig.cron }} ({{ callConfig.cron | naturalCron }})</h1>
   <p>{{ callConfig.toNumber }}</p>
 </div>
-<button class="button-primary" (click)="testCall()">Test Call</button>
+<button class="button-warning" (click)="testCall()"><i class="fa-light fa-phone"></i> Force Call</button>
 <ng-container *ngIf="calls$ | async as calls">
   <div *ngFor="let call of calls">{{ call | json }}</div>
 </ng-container>

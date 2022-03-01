@@ -1,12 +1,13 @@
-import * as functions from "firebase-functions";
 // Download the helper library from https://www.twilio.com/docs/node/install
 // Find your Account SID and Auth Token at twilio.com/console
 // and set the environment variables. See http://twil.io/secure
 import * as twilio from "twilio";
 
-export const makeCall = async (toNumber: string): Promise<void> => {
-  const accountSid = functions.config().TWILIO_ACCOUNT_SID;
-  const authToken = functions.config().TWILIO_AUTH_TOKEN;
+export const makeCall = async (
+  toNumber: string,
+  accountSid: string,
+  authToken: string,
+): Promise<void> => {
   console.log("Twilio credentials", accountSid, authToken);
 
   const client = twilio(accountSid, authToken);

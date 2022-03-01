@@ -8,6 +8,7 @@ import { makeCall } from "../util";
 const cors = corsDefault({ origin: true });
 
 export const testCall = functions
+  .runWith({ secrets: ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN"] })
   .region("europe-west2")
   .https.onRequest(async (req, res) => {
     cors(req, res, async () => {
@@ -34,7 +35,11 @@ export const testCall = functions
       console.log("Calling witg CallConfig:", callConfig);
 
       try {
-        await makeCall(callConfig.toNumber);
+        await makeCall(
+          callConfig.toNumber,
+          process.env.TWILIO_ACCOUNT_SID ?? "",
+          process.env.TWILIO_AUTH_TOKEN ?? "",
+        );
       } catch (e) {
         console.log(e);
         res.status(500).send(e);

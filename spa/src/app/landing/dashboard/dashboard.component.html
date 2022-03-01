@@ -1,31 +1,46 @@
-<ng-container *ngIf="callConfigs$ | async as callConfigs">
-  <div class="flex space-x-2" *ngFor="let callConfig of callConfigs">
-    <div class="cursor-pointer" [routerLink]="['/call-configs', callConfig.id]">
-      {{ callConfig.data().cron }} ({{ callConfig.data().cron | naturalCron }})
-      {{ callConfig.data().toNumber }}
-    </div>
-    <button class="button-warning" (click)="deleteCallConfig(callConfig)">
-      Delete <i class="fa-thin fa-trash-can"></i>
-    </button>
+<div class="m-4">
+  <form
+    class="flex flex-col space-y-2"
+    [formGroup]="createCallConfigForm"
+    (ngSubmit)="createCallConfig()"
+  >
+    <input
+      formControlName="cron"
+      class="p-2 border rounded-md"
+      type="text"
+      placeholder="e.g. Every sunday at 7pm"
+    />
+    <input
+      formControlName="toNumber"
+      class="p-2 border rounded-md"
+      type="text"
+      placeholder="Has to begin with the region code: +44 etc. No spaces!"
+    />
+    <button class="button-primary" type="submit">Create Config</button>
+  </form>
+
+  <div *ngIf="cron$ | async as cron">
+    {{ cron | naturalCron }}
   </div>
-</ng-container>
 
-<form [formGroup]="createCallConfigForm" (ngSubmit)="createCallConfig()">
-  <input
-    formControlName="cron"
-    class="p-2 border rounded-md"
-    type="text"
-    placeholder="e.g. Every sunday at 7pm"
-  />
-  <input
-    formControlName="toNumber"
-    class="p-2 border rounded-md"
-    type="text"
-    placeholder="Has to begin with the region code: +44 etc. No spaces!"
-  />
-  <button class="button-primary" type="submit">Create Config</button>
-</form>
-
-<div *ngIf="cron$ | async as cron">
-  {{ cron | naturalCron }}
+  <ng-container *ngIf="callConfigs$ | async as callConfigs">
+    <div
+      class="flex flex-col border rounded-md"
+      *ngFor="let callConfig of callConfigs"
+    >
+      <div
+        class="cursor-pointer p-4"
+        [routerLink]="['/call-configs', callConfig.id]"
+      >
+        <h2 class="font-bold text-xl">{{ callConfig.data().cron }}</h2>
+        <p class="text-xs text-gray-700">
+          ({{ callConfig.data().cron | naturalCron }})
+        </p>
+        <p class="py-2">Number: {{ callConfig.data().toNumber }}</p>
+      </div>
+      <button class="button-warning" (click)="deleteCallConfig(callConfig)">
+        Delete <i class="fa-thin fa-trash-can"></i>
+      </button>
+    </div>
+  </ng-container>
 </div>

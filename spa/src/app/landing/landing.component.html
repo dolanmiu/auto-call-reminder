@@ -1,1 +1,12 @@
+<div class="shadow h-12 px-4 flex items-center justify-between">
+  <div class="flex items-center space-x-2" [routerLink]="['/dashboard']">
+    <i class="fa-solid fa-blender-phone"></i>
+    <span class="font-bold">Phone Scheduler</span>
+  </div>
+
+  <button class="font-bold space-x-2 text-sm" (click)="signOut()">
+    <i class="fa-light fa-right-from-bracket"></i> Sign out
+  </button>
+</div>
+
 <router-outlet></router-outlet>

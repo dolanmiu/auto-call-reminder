@@ -14,8 +14,9 @@ import { makeCall } from "../util";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const getCronString = require("@darkeyedevelopers/natural-cron.js");
 
-export const checkPendingCalls = functions.pubsub
-  .schedule("every 5 minutes")
+export const checkPendingCalls = functions
+  .runWith({ secrets: ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN"] })
+  .pubsub.schedule("every 5 minutes")
   .onRun(async () => {
     const users = await admin.firestore().collection(USER_COLLECTION).get();
 
@@ -44,10 +45,18 @@ export const checkPendingCalls = functions.pubsub
           const call =
             callDoc.docs[0].data() as Call<FirebaseFirestore.Timestamp>;
           if (call.createdAt.toDate() < date) {
-            await makeCall(callConfig.toNumber);
+            await makeCall(
+              callConfig.toNumber,
+              process.env.TWILIO_ACCOUNT_SID ?? "",
+              process.env.TWILIO_AUTH_TOKEN ?? "",
+            );
           }
         } else {
-          await makeCall(callConfig.toNumber);
+          await makeCall(
+            callConfig.toNumber,
+            process.env.TWILIO_ACCOUNT_SID ?? "",
+            process.env.TWILIO_AUTH_TOKEN ?? "",
+          );
         }
       }
     }
