@@ -31,8 +31,8 @@ export class CallConfigComponent {
   private readonly callCollectionReference: CollectionReference<
     Call<Timestamp>
   >;
-  private readonly callConfigUid: string;
-  private readonly user: User;
+  public readonly callConfigUid: string;
+  public readonly user: User;
 
   constructor(
     route: ActivatedRoute,

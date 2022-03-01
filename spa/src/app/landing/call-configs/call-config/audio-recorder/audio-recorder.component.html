@@ -10,6 +10,7 @@
       font-size: 40px;
     "
   >
+    <i class="fa-light fa-microphone"></i>
     Start Recording
   </button>
   <button
@@ -23,9 +24,62 @@
       font-size: 40px;
     "
   >
+    <i class="fa-light fa-microphone fa-beat-fade"></i>
     Stop Recording
   </button>
   <audio controls="" *ngIf="url">
-    <source [src]="sanitize(url)" type="audio/wav" />
+    <source [src]="url | safeHtml: 'url'" type="audio/wav" />
   </audio>
 </div>
+
+<button class="button-primary" (click)="startUpload()">Upload</button>
+
+<ng-container *ngIf="taskWrapper as tw">
+  <ng-container *ngIf="tw.data as data">
+    <ng-container *ngIf="data.percentage$ | async as percentage">
+      <div
+        class="border-2 border-dashed border-gray-500 rounded-md delay-1000 duration-1000 transition-all overflow-hidden flex items-center"
+        [class.toast]="percentage.progress === 100"
+        [class.h-0]="percentage.progress < 100"
+      >
+        <div class="p-6 flex items-center space-x-4">
+          <div
+            class="w-16 h-16 rounded-full bg-green-500 text-white flex items-center justify-center"
+          >
+            <i class="fal fa-check fa-2x"></i>
+          </div>
+          <p class="font-bold">Upload of is Complete!</p>
+        </div>
+      </div>
+
+      <div
+        class="border-2 border-dashed border-gray-500 rounded-md overflow-hidden duration-1000 transition-all flex items-center w-full"
+        [class.h-32]="percentage.progress < 100"
+        [class.h-0]="percentage.progress === 100"
+        [class.border-2]="percentage.progress < 100"
+        [class.border-0]="percentage.progress === 100"
+      >
+        <div class="p-6 flex items-center space-x-4 w-full">
+          <div class="text-4xl" style="width: 50px">
+            <i class="fal fa-file-image"></i>
+          </div>
+          <div class="w-full space-y-2">
+            <p class="font-bold">Sound file</p>
+            <div class="text-sm text-gray-500">
+              <div *ngIf="data.percentage$ | async as percentage">
+                {{ percentage.snapshot.bytesTransferred | numeral: "0b" }}
+              </div>
+            </div>
+            <div class="relative w-full rounded-full h-4">
+              <div
+                class="bg-green-500 h-full rounded-full"
+                [style.width.%]="percentage.progress"
+              ></div>
+              <div class="absolute bg-gray-400 h-full rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>

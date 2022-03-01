@@ -1,5 +1,8 @@
 <div class="p-4">
-  <app-audio-recorder></app-audio-recorder>
+  <app-audio-recorder
+ [userUid]="user.uid"
+ [callConfigUid]="callConfigUid"
+  ></app-audio-recorder>
   <div *ngIf="callConfig$ | async as callConfig">
     <h1>{{ callConfig.cron }} ({{ callConfig.cron | naturalCron }})</h1>
     <p>{{ callConfig.toNumber }}</p>
