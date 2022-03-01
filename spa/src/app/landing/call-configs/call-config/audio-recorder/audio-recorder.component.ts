@@ -40,13 +40,10 @@ export class AudioRecorderComponent {
    * Will be called automatically.
    */
   public successCallback(stream: MediaStream): void {
-    var options = {
+    this.record = new StereoAudioRecorder(stream, {
       mimeType: 'audio/wav',
       numberOfAudioChannels: 1,
-      sampleRate: 16000,
-    };
-    //Start Actuall Recording
-    this.record = new StereoAudioRecorder(stream, options);
+    });
     this.record.record();
   }
   /**
