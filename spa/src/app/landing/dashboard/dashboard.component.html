@@ -23,7 +23,21 @@
     {{ cron | naturalCron }}
   </div>
 
+  <div class="py-4 -mx-4">
+    <hr />
+  </div>
+
+  <h1 class="font-bold text-2xl pb-4">Call Configurations</h1>
+
   <ng-container *ngIf="callConfigs$ | async as callConfigs">
+    <div
+      *ngIf="callConfigs.length === 0"
+      class="flex flex-col items-center py-8 space-y-2"
+    >
+      <i class="fa-light fa-empty-set text-4xl"></i>
+      <p class="font-bold">No Configurations</p>
+    </div>
+
     <div
       class="flex flex-col border rounded-md"
       *ngFor="let callConfig of callConfigs"

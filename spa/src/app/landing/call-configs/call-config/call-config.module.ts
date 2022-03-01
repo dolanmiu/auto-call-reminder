@@ -7,6 +7,7 @@ import { SharedModule } from '@shared';
 
 import { CallConfigRoutingModule } from './call-config-routing.module';
 import { CallConfigComponent } from './call-config.component';
+import { AudioRecorderModule } from './audio-recorder/audio-recorder.module';
 
 @NgModule({
   declarations: [CallConfigComponent],
@@ -16,6 +17,7 @@ import { CallConfigComponent } from './call-config.component';
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
+    AudioRecorderModule,
   ],
 })
 export class CallConfigModule {}
