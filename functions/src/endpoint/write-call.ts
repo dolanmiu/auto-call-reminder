@@ -15,6 +15,7 @@ export const writeCall = functions
     console.log(callInstance);
     console.log(userUid);
     console.log(callConfigUid);
+    console.log(req.body);
 
     if (!callInstance) {
       res.status(400).send("No Call Instance found");
