@@ -12,6 +12,10 @@ export const writeCall = functions
     const userUid = req.body.userUid as string | undefined;
     const callConfigUid = req.body.callConfigUid as string | undefined;
 
+    console.log(callInstance);
+    console.log(userUid);
+    console.log(callConfigUid);
+
     if (!callInstance) {
       res.status(400).send("No Call Instance found");
       return;

@@ -16,9 +16,6 @@ export const makeCall = async (
 
   const response = new VoiceResponse();
   response.play(
-    {
-      loop: 10,
-    },
     soundFile === "" ? "http://demo.twilio.com/docs/classic.mp3" : soundFile,
   );
 
