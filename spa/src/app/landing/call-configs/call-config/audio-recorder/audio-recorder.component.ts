@@ -45,9 +45,7 @@ export class AudioRecorderComponent implements OnInit {
   public record?: any;
   //Will use this flag for toggeling recording
   public recording = false;
-  //URL of Blob
-  public url?: string;
-  public error?: string;
+  public error = false;
   public blob?: Blob;
   private callConfigCollectionReference?: CollectionReference<CallConfig>;
 
@@ -88,7 +86,8 @@ export class AudioRecorderComponent implements OnInit {
           this.record.record();
         },
         (error: string) => {
-          this.error = 'Can not play audio in your browser: ' + error;
+          this.error = true;
+          console.error('Can not play audio in your browser: ', error);
         }
       );
   }
@@ -100,12 +99,7 @@ export class AudioRecorderComponent implements OnInit {
     this.recording = false;
 
     if (this.record) {
-      this.record.stop((blob: Blob) => {
-        this.url = URL.createObjectURL(blob);
-        console.log('blob', blob);
-        console.log('url', this.url);
-        this.blob = blob;
-      });
+      this.record.stop((blob: Blob) => (this.blob = blob));
     }
   }
 
@@ -119,17 +113,18 @@ export class AudioRecorderComponent implements OnInit {
       return;
     }
 
-    const path = `${getCallConfigDocument(
-      this.userUid,
-      this.callConfigUid
-    )}.wav`;
-    const task = uploadBytesResumable(ref(this.storage, path), this.blob);
+    const task = uploadBytesResumable(
+      ref(
+        this.storage,
+        `${getCallConfigDocument(this.userUid, this.callConfigUid)}.wav`
+      ),
+      this.blob
+    );
     const percentage$ = percentage(task).pipe(filterNullish());
-    const wrapper: TaskWrapper = {
+
+    this.taskWrapper = {
       data: { task, percentage$ },
     };
-
-    this.taskWrapper = wrapper;
     const downloadUrl = await getDownloadURL((await task).ref);
     updateDoc(doc(this.callConfigCollectionReference, this.callConfigUid), {
       soundFile: downloadUrl,

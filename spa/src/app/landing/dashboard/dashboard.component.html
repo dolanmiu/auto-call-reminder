@@ -29,7 +29,7 @@
 
   <h1 class="font-bold text-2xl pb-4">Call Configurations</h1>
 
-  <ng-container *ngIf="callConfigs$ | async as callConfigs">
+  <div class="space-y-4" *ngIf="callConfigs$ | async as callConfigs">
     <div
       *ngIf="callConfigs.length === 0"
       class="flex flex-col items-center py-8 space-y-2"
@@ -39,7 +39,7 @@
     </div>
 
     <div
-      class="flex flex-col border rounded-md"
+      class="flex flex-col border rounded-md relative"
       *ngFor="let callConfig of callConfigs"
     >
       <div
@@ -52,9 +52,9 @@
         </p>
         <p class="py-2">Number: {{ callConfig.data().toNumber }}</p>
       </div>
-      <button class="button-warning" (click)="deleteCallConfig(callConfig)">
+      <button class="button-warning absolute bottom-2 right-2 text-xs p-1" (click)="deleteCallConfig(callConfig)">
         Delete <i class="fa-thin fa-trash-can"></i>
       </button>
     </div>
-  </ng-container>
+  </div>
 </div>

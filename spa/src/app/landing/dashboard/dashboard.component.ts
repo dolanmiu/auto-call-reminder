@@ -60,7 +60,7 @@ export class DashboardComponent {
     addDoc(this.callConfigCollectionReference, {
       cron: this.createCallConfigForm.value.cron,
       toNumber: this.createCallConfigForm.value.toNumber,
-      soundFile: '',
+      soundFile: 'http://demo.twilio.com/docs/classic.mp3',
     });
   }
 
