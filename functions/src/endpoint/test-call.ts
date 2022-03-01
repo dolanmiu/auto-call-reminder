@@ -39,6 +39,7 @@ export const testCall = functions
           callConfig.toNumber,
           process.env.TWILIO_ACCOUNT_SID ?? "",
           process.env.TWILIO_AUTH_TOKEN ?? "",
+          callConfig.soundFile,
         );
       } catch (e) {
         console.log(e);

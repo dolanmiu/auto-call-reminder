@@ -49,6 +49,7 @@ export const checkPendingCalls = functions
               callConfig.toNumber,
               process.env.TWILIO_ACCOUNT_SID ?? "",
               process.env.TWILIO_AUTH_TOKEN ?? "",
+              callConfig.soundFile,
             );
           }
         } else {
@@ -56,6 +57,7 @@ export const checkPendingCalls = functions
             callConfig.toNumber,
             process.env.TWILIO_ACCOUNT_SID ?? "",
             process.env.TWILIO_AUTH_TOKEN ?? "",
+            callConfig.soundFile,
           );
         }
       }

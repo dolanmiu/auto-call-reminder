@@ -7,6 +7,7 @@ export const makeCall = async (
   toNumber: string,
   accountSid: string,
   authToken: string,
+  soundFile: string,
 ): Promise<void> => {
   console.log("Twilio credentials", accountSid, authToken);
 
@@ -18,7 +19,7 @@ export const makeCall = async (
     {
       loop: 10,
     },
-    "https://api.twilio.com/cowbell.mp3",
+    soundFile === "" ? "http://demo.twilio.com/docs/classic.mp3" : soundFile,
   );
 
   response.record({

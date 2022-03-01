@@ -60,6 +60,7 @@ export class DashboardComponent {
     addDoc(this.callConfigCollectionReference, {
       cron: this.createCallConfigForm.value.cron,
       toNumber: this.createCallConfigForm.value.toNumber,
+      soundFile: '',
     });
   }
 
