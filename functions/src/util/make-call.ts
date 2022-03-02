@@ -35,6 +35,7 @@ export const makeCall = async (
     from: "+447488880401",
     record: true,
     statusCallback: `https://europe-west2-phone-scheduler.cloudfunctions.net/writeCall?userUid=${userUid}&callConfigUid=${callConfigUid}`,
+    statusCallbackEvent: ["ringing", "answered", "completed"],
     statusCallbackMethod: "POST",
   });
   console.log(call.sid);
