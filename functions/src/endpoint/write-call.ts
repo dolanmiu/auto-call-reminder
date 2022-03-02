@@ -3,22 +3,17 @@ import * as admin from "firebase-admin";
 // import { Timestamp } from "firebase/firestore";
 
 import { Call, getCallsCollection } from "../global-shared";
-import { CallInstance } from "twilio/lib/rest/api/v2010/account/call";
+import { TwilioStatusCallback } from "../global-shared/models/twilio-status-callback";
 
 export const writeCall = functions
   .region("europe-west2")
   .https.onRequest(async (req, res) => {
-    const callInstance = req.body.callInstance as CallInstance | undefined;
-    const userUid = req.body.userUid as string | undefined;
-    const callConfigUid = req.body.callConfigUid as string | undefined;
+    const statusCallback = req.body as TwilioStatusCallback | undefined;
+    const callConfigUid = req.query.callConfigUid as string | undefined;
+    const userUid = req.query.userUid as string | undefined;
 
-    console.log(callInstance);
-    console.log(userUid);
-    console.log(callConfigUid);
-    console.log(req.body);
-
-    if (!callInstance) {
-      res.status(400).send("No Call Instance found");
+    if (!callConfigUid) {
+      res.status(400).send("No Call Config UID found");
       return;
     }
 
@@ -27,19 +22,19 @@ export const writeCall = functions
       return;
     }
 
-    if (!callConfigUid) {
-      res.status(400).send("No callConfigUid found");
+    if (!statusCallback) {
+      res.status(400).send("No Status Callback");
       return;
     }
 
-    const call: Call<FirebaseFirestore.Timestamp> = {
-      createdAt: admin.firestore.Timestamp.now(),
-      status: callInstance.status,
+    const call: Partial<Call<FirebaseFirestore.Timestamp>> = {
+      status: statusCallback.CallStatus,
+      recordingUrl: statusCallback.RecordingUrl,
     };
 
     await admin
       .firestore()
       .collection(getCallsCollection(userUid, callConfigUid))
-      .doc()
-      .create(call);
+      .doc(statusCallback.CallSid)
+      .update(call);
   });
