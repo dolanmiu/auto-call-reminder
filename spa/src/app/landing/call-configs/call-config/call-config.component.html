@@ -39,7 +39,24 @@
 
   <h1 class="font-bold text-2xl pb-4">Call logs</h1>
 
-  <ng-container *ngIf="calls$ | async as calls">
-    <div *ngFor="let call of calls">{{ call | json }}</div>
-  </ng-container>
+  <div class="space-y-4" *ngIf="calls$ | async as calls">
+    <div
+      class="flex flex-col border rounded p-4 space-y-4"
+      *ngFor="let call of calls"
+    >
+      <h3 class="font-bold">
+        {{ call.createdAt | timestampToDate | date: "medium" }}
+      </h3>
+      <audio class="self-center" controls="">
+        <source [src]="call.recordingUrl | safeHtml: 'url'" type="audio/wav" />
+      </audio>
+      <div
+        class="rounded text-white font-semibold px-2 py-1 self-end"
+        [class.bg-green-500]="call.status === 'completed'"
+        [class.bg-purple-500]="call.status === 'queued'"
+      >
+        {{ call.status }}
+      </div>
+    </div>
+  </div>
 </div>
