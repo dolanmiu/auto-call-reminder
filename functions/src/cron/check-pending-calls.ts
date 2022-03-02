@@ -45,20 +45,42 @@ export const checkPendingCalls = functions
           const call =
             callDoc.docs[0].data() as Call<FirebaseFirestore.Timestamp>;
           if (call.createdAt.toDate() < date) {
-            await makeCall(
+            const call = await makeCall(
               callConfig.toNumber,
               process.env.TWILIO_ACCOUNT_SID ?? "",
               process.env.TWILIO_AUTH_TOKEN ?? "",
               callConfig.soundFile,
+              user.id,
+              callConfigDoc.id,
             );
+
+            await admin
+              .firestore()
+              .collection(getCallsCollection(user.id, callConfigDoc.id))
+              .doc(call.sid)
+              .set({
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                status: call.status,
+              });
           }
         } else {
-          await makeCall(
+          const call = await makeCall(
             callConfig.toNumber,
             process.env.TWILIO_ACCOUNT_SID ?? "",
             process.env.TWILIO_AUTH_TOKEN ?? "",
             callConfig.soundFile,
+            user.id,
+            callConfigDoc.id,
           );
+
+          await admin
+            .firestore()
+            .collection(getCallsCollection(user.id, callConfigDoc.id))
+            .doc(call.sid)
+            .set({
+              createdAt: admin.firestore.FieldValue.serverTimestamp(),
+              status: call.status,
+            });
         }
       }
     }

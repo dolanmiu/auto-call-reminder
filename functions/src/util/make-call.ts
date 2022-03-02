@@ -2,13 +2,16 @@
 // Find your Account SID and Auth Token at twilio.com/console
 // and set the environment variables. See http://twil.io/secure
 import * as twilio from "twilio";
+import { CallInstance } from "twilio/lib/rest/api/v2010/account/call";
 
 export const makeCall = async (
   toNumber: string,
   accountSid: string,
   authToken: string,
   soundFile: string,
-): Promise<void> => {
+  userUid: string,
+  callConfigUid: string,
+): Promise<CallInstance> => {
   console.log("Twilio credentials", accountSid, authToken);
 
   const client = twilio(accountSid, authToken);
@@ -26,27 +29,15 @@ export const makeCall = async (
 
   console.log(response.toString());
 
-  const main = async () => {
-    try {
-      const call = await client.calls.create({
-        twiml: response.toString(),
-        to: toNumber,
-        from: "+447488880401",
-        record: true,
-        statusCallback:
-          "https://europe-west2-phone-scheduler.cloudfunctions.net/writeCall",
-        statusCallbackMethod: "POST",
-      });
-      console.log(call);
+  const call = await client.calls.create({
+    twiml: response.toString(),
+    to: toNumber,
+    from: "+447488880401",
+    record: true,
+    statusCallback: `https://europe-west2-phone-scheduler.cloudfunctions.net/writeCall?userUid=${userUid}&callConfigUid=${callConfigUid}`,
+    statusCallbackMethod: "POST",
+  });
+  console.log(call.sid);
 
-      // setInterval(async () => {
-      //   //   console.log(client.calls..get(call.sid));
-      //   console.log(await client.calls.list({ limit: 10 }));
-      // }, 1000);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  main();
+  return call;
 };

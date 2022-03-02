@@ -1,16 +1,25 @@
-<p>login works!</p>
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-  <input
-    formControlName="username"
-    class="p-2 border rounded-md"
-    type="text"
-    placeholder="Username"
-  />
-  <input
-    formControlName="password"
-    class="p-2 border rounded-md"
-    type="password"
-    placeholder="Password"
-  />
-  <button class="button-primary" type="submit">Login</button>
-</form>
+<div class="flex items-center justify-center w-screen h-screen">
+  <form
+    class="flex flex-col items-center space-y-4"
+    [formGroup]="loginForm"
+    (ngSubmit)="login()"
+  >
+    <div class="flex flex-col items-center space-y-2">
+      <i class="fa-solid fa-blender-phone text-2xl"></i>
+      <span class="font-bold">Phone Scheduler</span>
+    </div>
+    <input
+      formControlName="username"
+      class="p-2 border rounded-md"
+      type="text"
+      placeholder="Username"
+    />
+    <input
+      formControlName="password"
+      class="p-2 border rounded-md"
+      type="password"
+      placeholder="Password"
+    />
+    <button class="button-primary px-10" type="submit">Login</button>
+  </form>
+</div>
