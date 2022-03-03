@@ -37,7 +37,7 @@ export const writeCall = functions
 
       const call: Partial<Call<FirebaseFirestore.Timestamp>> = {
         status: statusCallback.CallStatus,
-        recordingUrl: statusCallback.RecordingUrl,
+        recordingUrl: statusCallback.RecordingUrl ?? "",
       };
 
       console.log("Created call Payload", call);
@@ -49,5 +49,7 @@ export const writeCall = functions
         .update(call);
 
       console.log("Finished writing to store", call);
+
+      res.status(200).end();
     });
   });

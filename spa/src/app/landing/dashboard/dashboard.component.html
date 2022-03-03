@@ -52,7 +52,10 @@
         </p>
         <p class="py-2">Number: {{ callConfig.data().toNumber }}</p>
       </div>
-      <button class="button-warning absolute bottom-2 right-2 text-xs p-1" (click)="deleteCallConfig(callConfig)">
+      <button
+        class="button-warning absolute bottom-2 right-2 text-xs p-1"
+        (click)="deleteCallConfig(callConfig)"
+      >
         Delete <i class="fa-thin fa-trash-can"></i>
       </button>
     </div>

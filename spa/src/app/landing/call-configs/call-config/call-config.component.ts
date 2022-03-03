@@ -6,7 +6,7 @@ import {
   collectionData,
   docData,
 } from '@angular/fire/firestore';
-import { Observable, take } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from '@angular/fire/auth';
 import { Timestamp } from 'firebase/firestore';
@@ -46,7 +46,11 @@ export class CallConfigComponent {
     this.user = route.snapshot.data['user'] as User;
 
     this.callConfig$ = docData(
-      getCallConfigDocumentReference(firestore, this.user.uid, this.callConfigUid)
+      getCallConfigDocumentReference(
+        firestore,
+        this.user.uid,
+        this.callConfigUid
+      )
     );
 
     this.callCollectionReference = getCallCollectionReference(
@@ -55,7 +59,14 @@ export class CallConfigComponent {
       this.callConfigUid
     );
 
-    this.calls$ = collectionData(this.callCollectionReference);
+    this.calls$ = collectionData(this.callCollectionReference).pipe(
+      map((calls) =>
+        [...calls].sort(
+          (a, b) =>
+            b.createdAt.toDate().getTime() - a.createdAt.toDate().getTime()
+        )
+      )
+    );
     this.createAudioForm = fb.group({
       audio: [''],
     });

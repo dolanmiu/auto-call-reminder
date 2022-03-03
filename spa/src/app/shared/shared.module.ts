@@ -6,6 +6,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { NumeralPipe } from './numeral.pipe';
 import { UrlFromBlobPipe } from './url-from-blob.pipe';
 import { TimestampToDatePipe } from './timestamp-to-date.pipe';
+import { SortCallsPipe } from './sort-calls.pipe';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { TimestampToDatePipe } from './timestamp-to-date.pipe';
     NumeralPipe,
     UrlFromBlobPipe,
     TimestampToDatePipe,
+    SortCallsPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -22,6 +24,7 @@ import { TimestampToDatePipe } from './timestamp-to-date.pipe';
     NumeralPipe,
     UrlFromBlobPipe,
     TimestampToDatePipe,
+    SortCallsPipe,
   ],
 })
 export class SharedModule {}

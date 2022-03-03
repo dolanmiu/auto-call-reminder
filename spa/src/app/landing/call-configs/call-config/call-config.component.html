@@ -17,21 +17,31 @@
       <source [src]="callConfig.soundFile | safeHtml: 'url'" type="audio/wav" />
     </audio>
 
-    <button class="button-warning self-end text-sm p-1" (click)="testCall()">
-      <i class="fa-light fa-phone"></i> Force Call
-    </button>
+    <div class="flex justify-between">
+      <app-modal>
+        <button parent class="button-primary self-end text-sm p-1">
+          <i class="fa-light fa-phone"></i> Change Audio
+        </button>
+        <div child class="flex flex-col">
+          <h1 class="font-bold text-lg self-center">Recording</h1>
+
+          <div class="-mx-10 py-4">
+            <hr />
+          </div>
+
+          <app-audio-recorder
+            class="self-center"
+            [userUid]="user.uid"
+            [callConfigUid]="callConfigUid"
+          ></app-audio-recorder>
+        </div>
+      </app-modal>
+
+      <button class="button-warning self-end text-sm p-1" (click)="testCall()">
+        <i class="fa-light fa-phone"></i> Force Call
+      </button>
+    </div>
   </div>
-
-  <div class="-mx-4 py-4">
-    <hr />
-  </div>
-
-  <h1 class="font-bold text-2xl pb-4">Recording</h1>
-
-  <app-audio-recorder
-    [userUid]="user.uid"
-    [callConfigUid]="callConfigUid"
-  ></app-audio-recorder>
 
   <div class="-mx-4 py-4">
     <hr />
@@ -47,13 +57,25 @@
       <h3 class="font-bold">
         {{ call.createdAt | timestampToDate | date: "medium" }}
       </h3>
-      <audio class="self-center" controls="">
+      <audio
+        class="self-center"
+        controls=""
+        *ngIf="call.recordingUrl !== '' && !!call.recordingUrl"
+      >
         <source [src]="call.recordingUrl | safeHtml: 'url'" type="audio/wav" />
       </audio>
+      <div
+        class="flex flex-col space-y-2 items-center"
+        *ngIf="call.recordingUrl === '' || !call.recordingUrl"
+      >
+        <i class="fa-light fa-music-slash"></i> No audio yet
+      </div>
       <div
         class="rounded text-white font-semibold px-2 py-1 self-end"
         [class.bg-green-500]="call.status === 'completed'"
         [class.bg-purple-500]="call.status === 'queued'"
+        [class.bg-orange-500]="call.status === 'ringing'"
+        [class.bg-blue-500]="call.status === 'in-progress'"
       >
         {{ call.status }}
       </div>

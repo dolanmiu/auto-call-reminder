@@ -1,0 +1,31 @@
+<div (click)="show = true">
+  <ng-content select="[parent]"></ng-content>
+</div>
+
+<div
+  class="fixed top-0 left-0 h-screen w-screen bg-black z-40 transition-all opacity-0"
+  [class.pointer-events-none]="!show"
+  [class.opacity-0]="!show"
+  [class.opacity-40]="show"
+  (click)="show = false"
+></div>
+
+<div
+  class="fixed top-0 left-0 flex z-50 items-center justify-center w-full h-full pointer-events-none transition-all"
+  [class.hide]="!show"
+  [class.show]="show"
+>
+  <div
+    class="bg-white dark:bg-gray-900 shadow-xl p-10 pt-6 md:pt-10 pointer-events-auto relative w-screen h-screen sm:w-auto sm:h-auto sm:rounded-xl overflow-y-auto"
+    [class.pointer-events-none]="!show"
+    [class.pointer-events-auto]="show"
+  >
+    <div
+      class="absolute sm:-right-10 sm:-top-10 top-6 right-6 text-black sm:text-white cursor-pointer hover:text-black transition-all dark:text-gray-100"
+      (click)="show = false"
+    >
+      <i class="fa-regular fa-times text-xl"></i>
+    </div>
+    <ng-content select="[child]"></ng-content>
+  </div>
+</div>
