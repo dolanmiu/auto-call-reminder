@@ -34,6 +34,7 @@ export const makeCall = async (
     to: toNumber,
     from: "+447488880401",
     record: true,
+    timeout: 7,
     statusCallback: `https://us-east4-phone-scheduler.cloudfunctions.net/writeCall?userUid=${userUid}&callConfigUid=${callConfigUid}`,
     statusCallbackEvent: ["ringing", "answered", "completed"],
     statusCallbackMethod: "POST",

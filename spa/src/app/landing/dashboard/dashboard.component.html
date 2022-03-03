@@ -12,7 +12,7 @@
     />
 
     <div class="text-xs flex space-x-2 text-gray-500">
-      <strong>Cron Preview:</strong>
+      <strong><i class="fa-regular fa-calendar-clock"></i> Cron Preview:</strong>
       <span *ngIf="cron$ | async as cron">
         {{ cron | naturalCron }}
       </span>
