@@ -76,6 +76,7 @@
         [class.bg-purple-500]="call.status === 'queued'"
         [class.bg-orange-500]="call.status === 'ringing'"
         [class.bg-blue-500]="call.status === 'in-progress'"
+        [class.bg-red-500]="call.status === 'no-answer'"
       >
         {{ call.status }}
       </div>
