@@ -12,9 +12,11 @@
     />
 
     <div class="text-xs flex space-x-2 text-gray-500">
-      <strong><i class="fa-regular fa-calendar-clock"></i> Cron Preview:</strong>
+      <strong
+        ><i class="fa-regular fa-calendar-clock"></i> Cron Preview:</strong
+      >
       <span *ngIf="cron$ | async as cron">
-        {{ cron | naturalCron }}
+        {{ cron | naturalCron | cleanCron }}
       </span>
 
       <span *ngIf="!(cron$ | async)">Type something above...</span>
@@ -56,7 +58,7 @@
       >
         <h2 class="font-bold text-xl">{{ callConfig.data().cron }}</h2>
         <p class="text-xs text-gray-700">
-          ({{ callConfig.data().cron | naturalCron }})
+          ({{ callConfig.data().cron | naturalCron | cleanCron }})
         </p>
         <p class="py-2">Number: {{ callConfig.data().toNumber }}</p>
       </div>

@@ -5,6 +5,7 @@ import * as Cron from "cron-converter";
 import {
   Call,
   CallConfig,
+  cleanCron,
   getCallConfigCollection,
   getCallsCollection,
   USER_COLLECTION,
@@ -32,7 +33,7 @@ export const checkPendingCalls = functions
         const callDoc = await admin
           .firestore()
           .collection(getCallsCollection(user.id, callConfigDoc.id))
-          .where("status", "==", "completed")
+          .where("status", "in", ["completed", "dummy"])
           .orderBy("createdAt", "desc")
           .limit(1)
           .get();
@@ -44,8 +45,8 @@ export const checkPendingCalls = functions
           const cronInstance = new Cron({
             timezone: "Europe/London",
           });
-          const cronString = getCronString(callConfig.cron);
-          console.log(`Cron for callConfig ${callConfig}`, cronString);
+          const cronString = cleanCron(getCronString(callConfig.cron));
+          console.log(`Cron for cron phrase '${callConfig.cron}':`, cronString);
           cronInstance.fromString(cronString);
           const currentDate = admin.firestore.Timestamp.now().toDate();
           const schedule = cronInstance.schedule(currentDate);
