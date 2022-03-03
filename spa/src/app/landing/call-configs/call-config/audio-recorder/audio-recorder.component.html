@@ -1,4 +1,4 @@
-<div class="space-y-4">
+<div class="space-y-4 flex flex-col items-center">
   <button
     (click)="initiateRecording()"
     class="h-20 w-20 rounded-full flex items-center justify-center cursor-pointer border-2 border-green-700 hover:bg-green-700 hover:text-white text-green-700 text-3xl"
@@ -7,13 +7,18 @@
     <i class="fa-light fa-microphone"></i>
   </button>
 
-  <button
-    (click)="stopRecording()"
-    class="h-20 w-20 rounded-full flex items-center justify-center cursor-pointer border-2 border-red-700 bg-red-600 text-white text-3xl"
-    *ngIf="recording"
-  >
-    <i class="fa-light fa-microphone fa-beat-fade"></i>
-  </button>
+  <div class="h-20 w-20 relative" *ngIf="recording">
+    <span
+      class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-200 opacity-50"
+    ></span>
+
+    <button
+      (click)="stopRecording()"
+      class="h-20 w-20 rounded-full flex items-center justify-center cursor-pointer border-2 border-red-700 bg-red-600 text-white text-3xl z-20"
+    >
+      <i class="fa-light fa-microphone fa-beat-fade"></i>
+    </button>
+  </div>
 
   <div
     *ngIf="error"

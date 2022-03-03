@@ -60,6 +60,7 @@ export class CallConfigComponent {
     );
 
     this.calls$ = collectionData(this.callCollectionReference).pipe(
+      map((calls) => calls.filter((c) => c.status !== 'dummy')),
       map((calls) =>
         [...calls].sort(
           (a, b) =>

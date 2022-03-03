@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
 
 admin.initializeApp({
-  storageBucket: "gs://phone-scheduler.appspot.comm",
+  storageBucket: "gs://phone-scheduler.appspot.com",
 });
 
 export * from "./user";

@@ -12,8 +12,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@angular/fire/auth';
 import { map, Observable } from 'rxjs';
+import { Timestamp } from 'firebase/firestore';
 
-import { getCallConfigCollectionReference, notIdenticalTo } from '@common';
+import {
+  getCallCollectionReference,
+  getCallConfigCollectionReference,
+  notIdenticalTo,
+} from '@common';
 import { CallConfig } from '@models';
 @Component({
   selector: 'app-dashboard',
@@ -25,13 +30,18 @@ export class DashboardComponent {
   public readonly createCallConfigForm: FormGroup;
   public readonly cron$: Observable<string>;
   private readonly callConfigCollectionReference: CollectionReference<CallConfig>;
+  private readonly user: User;
 
-  constructor(firestore: Firestore, route: ActivatedRoute, fb: FormBuilder) {
-    const user = route.snapshot.data['user'] as User;
+  constructor(
+    private readonly firestore: Firestore,
+    route: ActivatedRoute,
+    fb: FormBuilder
+  ) {
+    this.user = route.snapshot.data['user'] as User;
 
     this.callConfigCollectionReference = getCallConfigCollectionReference(
       firestore,
-      user.uid
+      this.user.uid
     );
 
     this.callConfigs$ = collectionSnapshots(this.callConfigCollectionReference);
@@ -52,15 +62,28 @@ export class DashboardComponent {
     );
   }
 
-  public createCallConfig(): void {
+  public async createCallConfig(): Promise<void> {
     if (!this.createCallConfigForm.valid) {
       return;
     }
 
-    addDoc(this.callConfigCollectionReference, {
+    const doc = await addDoc(this.callConfigCollectionReference, {
       cron: this.createCallConfigForm.value.cron,
       toNumber: this.createCallConfigForm.value.toNumber,
       soundFile: 'http://demo.twilio.com/docs/classic.mp3',
+    });
+
+    const callsCollectionReference = getCallCollectionReference(
+      this.firestore,
+      this.user.uid,
+      doc.id
+    );
+
+    // Note: Dummy call is needed for the cron job.
+    // If there is no dummy call, the cron will activate immediately because it would assume a call needs to be placed
+    addDoc(callsCollectionReference, {
+      createdAt: Timestamp.now(),
+      status: 'dummy',
     });
   }
 
