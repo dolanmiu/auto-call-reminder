@@ -28,10 +28,6 @@ export const checkPendingCalls = functions
 
       for (const callConfigDoc of callConfigs.docs) {
         const callConfig = callConfigDoc.data() as CallConfig;
-        const cronInstance = new Cron();
-        cronInstance.fromString(getCronString(callConfig.cron));
-        const schedule = cronInstance.schedule();
-        const date = schedule.prev().toDate();
 
         const callDoc = await admin
           .firestore()
@@ -44,7 +40,18 @@ export const checkPendingCalls = functions
         if (callDoc.size > 0) {
           const call =
             callDoc.docs[0].data() as Call<FirebaseFirestore.Timestamp>;
-          if (call.createdAt.toDate() < date) {
+
+          const cronInstance = new Cron({
+            timezone: "Europe/London",
+          });
+          const cronString = getCronString(callConfig.cron);
+          console.log(`Cron for callConfig ${callConfig}`, cronString);
+          cronInstance.fromString(cronString);
+          const currentDate = admin.firestore.Timestamp.now().toDate();
+          const schedule = cronInstance.schedule(currentDate);
+          const scheduledDate = schedule.prev().toDate();
+
+          if (call.createdAt.toDate() < scheduledDate) {
             const call = await makeCall(
               callConfig.toNumber,
               process.env.TWILIO_ACCOUNT_SID ?? "",
@@ -64,23 +71,10 @@ export const checkPendingCalls = functions
               });
           }
         } else {
-          const call = await makeCall(
-            callConfig.toNumber,
-            process.env.TWILIO_ACCOUNT_SID ?? "",
-            process.env.TWILIO_AUTH_TOKEN ?? "",
-            callConfig.soundFile,
-            user.id,
-            callConfigDoc.id,
-          );
-
-          await admin
-            .firestore()
-            .collection(getCallsCollection(user.id, callConfigDoc.id))
-            .doc(call.sid)
-            .set({
-              createdAt: admin.firestore.FieldValue.serverTimestamp(),
-              status: call.status,
-            });
+          // Note: There is no calls and no dummy record
+          // So it is not possible to know when to start calling
+          // Do not risk calling
+          return null;
         }
       }
     }
