@@ -10,18 +10,26 @@
       type="text"
       placeholder="e.g. Every sunday at 7pm"
     />
+
+    <div class="text-xs flex space-x-2 text-gray-500">
+      <strong>Cron Preview:</strong>
+      <span *ngIf="cron$ | async as cron">
+        {{ cron | naturalCron }}
+      </span>
+
+      <span *ngIf="!(cron$ | async)">Type something above...</span>
+    </div>
+
     <input
       formControlName="toNumber"
       class="p-2 border rounded-md"
       type="text"
       placeholder="Has to begin with the region code: +44 etc. No spaces!"
     />
-    <button class="button-primary" type="submit">Create Config</button>
+    <button class="button-primary" type="submit">
+      <i class="fa-light fa-alarm-clock"></i> Create Config
+    </button>
   </form>
-
-  <div *ngIf="cron$ | async as cron">
-    {{ cron | naturalCron }}
-  </div>
 
   <div class="py-4 -mx-4">
     <hr />
