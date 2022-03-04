@@ -12,8 +12,6 @@ export const makeCall = async (
   userUid: string,
   callConfigUid: string,
 ): Promise<CallInstance> => {
-  console.log("Twilio credentials", accountSid, authToken);
-
   const client = twilio(accountSid, authToken);
   const { VoiceResponse } = twilio.twiml;
 
