@@ -5,12 +5,15 @@
     class="flex items-center space-x-2 cursor-pointer"
     [routerLink]="['/dashboard']"
   >
-    <i class="fa-solid fa-blender-phone"></i>
+    <i class="fa-duotone fa-cat-space text-xl"></i>
     <span class="font-bold">Phone Scheduler</span>
   </div>
 
-  <button class="font-bold space-x-2 text-sm" (click)="signOut()">
-    <i class="fa-light fa-right-from-bracket"></i> Sign out
+  <button
+    class="font-bold space-x-2 text-sm bg-black text-white rounded-full flex items-center justify-center w-7 h-7"
+    [routerLink]="['/my-account']"
+  >
+    <i class="fa-solid fa-user text-xs"></i>
   </button>
 </div>
 

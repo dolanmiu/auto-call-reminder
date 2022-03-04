@@ -30,6 +30,14 @@ const routes: Routes = [
     resolve: { user: AuthResolver },
   },
   {
+    path: 'my-account',
+    loadChildren: () =>
+      import(`./my-account/my-account.module`).then((m) => m.MyAccountModule),
+    canActivate: [AuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
+    resolve: { user: AuthResolver },
+  },
+  {
     path: 'login',
     loadChildren: () =>
       import(`./login/login.module`).then((m) => m.LoginModule),

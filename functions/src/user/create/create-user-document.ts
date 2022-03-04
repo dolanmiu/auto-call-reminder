@@ -12,6 +12,7 @@ export const createUserDocument = functions
   .onCreate(async (user) => {
     const userData: UserData = {
       displayName: user.displayName ?? "Un-named",
+      phoneNumber: "",
     };
 
     console.log("Creating User Document", userData);
