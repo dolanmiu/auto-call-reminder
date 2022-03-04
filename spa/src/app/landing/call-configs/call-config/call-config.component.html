@@ -102,7 +102,7 @@
           [class.bg-blue-500]="call.data().status === 'in-progress'"
           [class.bg-amber-500]="call.data().status === 'no-answer'"
           [class.bg-red-500]="call.data().status === 'failed'"
-          [class.bg-gray-500]="call.data().status === 'cancelled'"
+          [class.bg-gray-500]="call.data().status === 'canceled'"
         >
           {{ call.data().status }}
         </div>
@@ -114,7 +114,7 @@
             call.data().status !== 'completed' &&
             call.data().status !== 'failed' &&
             call.data().status !== 'no-answer' &&
-            call.data().status !== 'cancelled'
+            call.data().status !== 'canceled'
           "
         >
           <i class="fa-light fa-phone-slash"></i> Cancel Call

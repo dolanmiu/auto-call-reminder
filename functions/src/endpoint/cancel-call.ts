@@ -10,11 +10,6 @@ export const cancelCall = functions
   .region("europe-west2")
   .https.onRequest(async (req, res) => {
     cors(req, res, async () => {
-      console.log(
-        "details",
-        process.env.TWILIO_ACCOUNT_SID ?? "",
-        process.env.TWILIO_AUTH_TOKEN ?? "",
-      );
       const callUid = req.query.callUid as string | undefined;
 
       if (!callUid) {
