@@ -39,8 +39,19 @@
         </div>
       </app-modal>
 
-      <button class="button-warning self-end text-sm p-1" (click)="testCall()">
-        <i class="fa-light fa-phone"></i> Force Call
+      <button
+        class="button-warning self-end text-sm p-1"
+        [disabled]="makingCall"
+        [class.pointer-events-none]="makingCall"
+        (click)="testCall()"
+      >
+        <div class="space-x-1" *ngIf="!makingCall">
+          <i class="fa-light fa-phone"></i><span>Force Call</span>
+        </div>
+        <div class="space-x-1" *ngIf="makingCall">
+          <i class="fa-light fa-spinner-third animate-spin"></i
+          ><span>Calling...</span>
+        </div>
       </button>
     </div>
   </div>

@@ -83,9 +83,11 @@ export class CallConfigComponent {
         `https://europe-west2-phone-scheduler.cloudfunctions.net/testCall?callConfigUid=${this.callConfigUid}&userUid=${this.user.uid}`
       )
       .pipe(take(1))
-      .subscribe(() => {
-        this.makingCall = false;
-      });
+      .subscribe();
+
+    setTimeout(() => {
+      this.makingCall = false;
+    }, 20000);
   }
 
   public cancelCall(callUid: string): void {
