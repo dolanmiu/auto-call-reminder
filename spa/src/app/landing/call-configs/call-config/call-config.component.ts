@@ -3,8 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import {
   CollectionReference,
   Firestore,
-  collectionData,
   docData,
+  collectionSnapshots,
+  QueryDocumentSnapshot,
 } from '@angular/fire/firestore';
 import { map, Observable, take } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -24,7 +25,7 @@ import {
   styleUrls: ['./call-config.component.scss'],
 })
 export class CallConfigComponent {
-  public readonly calls$: Observable<Call<Timestamp>[]>;
+  public readonly calls$: Observable<QueryDocumentSnapshot<Call<Timestamp>>[]>;
   public readonly callConfig$: Observable<CallConfig>;
   public readonly createAudioForm: FormGroup;
   public makingCall = false;
@@ -59,15 +60,17 @@ export class CallConfigComponent {
       this.callConfigUid
     );
 
-    this.calls$ = collectionData(this.callCollectionReference).pipe(
-      map((calls) => calls.filter((c) => c.status !== 'dummy')),
+    this.calls$ = collectionSnapshots(this.callCollectionReference).pipe(
+      map((calls) => calls.filter((c) => c.data().status !== 'dummy')),
       map((calls) =>
         [...calls].sort(
           (a, b) =>
-            b.createdAt.toDate().getTime() - a.createdAt.toDate().getTime()
+            b.data().createdAt.toDate().getTime() -
+            a.data().createdAt.toDate().getTime()
         )
       )
     );
+
     this.createAudioForm = fb.group({
       audio: [''],
     });
@@ -83,5 +86,14 @@ export class CallConfigComponent {
       .subscribe(() => {
         this.makingCall = false;
       });
+  }
+
+  public cancelCall(callUid: string): void {
+    this.http
+      .get(
+        `https://europe-west2-phone-scheduler.cloudfunctions.net/cancelCall?callUid=${callUid}`
+      )
+      .pipe(take(1))
+      .subscribe();
   }
 }

@@ -9,7 +9,11 @@ export const setCallStatusToComplete = async (
   accountSid: string,
   authToken: string,
 ): Promise<CallInstance> => {
+  console.log("Twilio credentials", accountSid, authToken);
+
   const client = twilio(accountSid, authToken);
+
+  console.log("Cancelling call", callSid);
 
   const call = await client.calls(callSid).update({ status: "completed" });
 

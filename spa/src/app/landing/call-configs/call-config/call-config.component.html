@@ -64,30 +64,50 @@
       *ngFor="let call of calls"
     >
       <h3 class="font-bold">
-        {{ call.createdAt | timestampToDate | date: "medium" }}
+        {{ call.data().createdAt | timestampToDate | date: "medium" }}
       </h3>
       <audio
         class="self-center"
         controls=""
-        *ngIf="call.recordingUrl !== '' && !!call.recordingUrl"
+        *ngIf="call.data().recordingUrl !== '' && !!call.data().recordingUrl"
       >
-        <source [src]="call.recordingUrl | safeHtml: 'url'" type="audio/wav" />
+        <source
+          [src]="call.data().recordingUrl | safeHtml: 'url'"
+          type="audio/wav"
+        />
       </audio>
       <div
         class="flex flex-col space-y-2 items-center"
-        *ngIf="call.recordingUrl === '' || !call.recordingUrl"
+        *ngIf="call.data().recordingUrl === '' || !call.data().recordingUrl"
       >
         <i class="fa-light fa-music-slash"></i> No audio yet
       </div>
-      <div
-        class="rounded text-white font-semibold px-2 py-1 self-end"
-        [class.bg-green-500]="call.status === 'completed'"
-        [class.bg-purple-500]="call.status === 'queued'"
-        [class.bg-orange-500]="call.status === 'ringing'"
-        [class.bg-blue-500]="call.status === 'in-progress'"
-        [class.bg-red-500]="call.status === 'no-answer'"
-      >
-        {{ call.status }}
+      <div class="flex justify-between flex-row-reverse bg-">
+        <div
+          class="rounded text-white font-semibold px-2 py-1"
+          [class.bg-green-500]="call.data().status === 'completed'"
+          [class.bg-purple-500]="call.data().status === 'queued'"
+          [class.bg-orange-500]="call.data().status === 'ringing'"
+          [class.bg-blue-500]="call.data().status === 'in-progress'"
+          [class.bg-amber-500]="call.data().status === 'no-answer'"
+          [class.bg-red-500]="call.data().status === 'failed'"
+          [class.bg-gray-500]="call.data().status === 'cancelled'"
+        >
+          {{ call.data().status }}
+        </div>
+
+        <button
+          class="button-warning text-sm p-1"
+          (click)="cancelCall(call.id)"
+          *ngIf="
+            call.data().status !== 'completed' &&
+            call.data().status !== 'failed' &&
+            call.data().status !== 'no-answer' &&
+            call.data().status !== 'cancelled'
+          "
+        >
+          <i class="fa-light fa-phone-slash"></i> Cancel Call
+        </button>
       </div>
     </div>
   </div>
