@@ -8,6 +8,8 @@ import {
   cleanCron,
   getCallConfigCollection,
   getCallsCollection,
+  getUserDocument,
+  UserData,
   USER_COLLECTION,
 } from "../global-shared";
 import { makeCall } from "../util";
@@ -38,6 +40,13 @@ export const checkPendingCalls = functions
           .limit(1)
           .get();
 
+        const userDataSnapshot = await admin
+          .firestore()
+          .doc(getUserDocument(user.id))
+          .get();
+
+        const userData = userDataSnapshot.data() as UserData;
+
         if (callDoc.size > 0) {
           const call =
             callDoc.docs[0].data() as Call<FirebaseFirestore.Timestamp>;
@@ -60,6 +69,7 @@ export const checkPendingCalls = functions
               callConfig.soundFile,
               user.id,
               callConfigDoc.id,
+              userData.phoneNumber,
             );
 
             await admin

@@ -11,6 +11,7 @@ export const makeCall = async (
   soundFile: string,
   userUid: string,
   callConfigUid: string,
+  callerId: string,
 ): Promise<CallInstance> => {
   const client = twilio(accountSid, authToken);
   const { VoiceResponse } = twilio.twiml;
@@ -36,6 +37,7 @@ export const makeCall = async (
     statusCallback: `https://us-east4-phone-scheduler.cloudfunctions.net/writeCall?userUid=${userUid}&callConfigUid=${callConfigUid}`,
     statusCallbackEvent: ["ringing", "answered", "completed"],
     statusCallbackMethod: "POST",
+    callerId: callerId === "" ? undefined : callerId,
   });
   console.log(call.sid);
 

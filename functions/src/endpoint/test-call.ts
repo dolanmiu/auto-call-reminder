@@ -6,6 +6,8 @@ import {
   CallConfig,
   getCallConfigDocument,
   getCallsCollection,
+  getUserDocument,
+  UserData,
 } from "../global-shared";
 import { makeCall } from "../util";
 
@@ -34,7 +36,13 @@ export const testCall = functions
         .doc(getCallConfigDocument(userUid, callConfigUid))
         .get();
 
+      const userDataSnapshot = await admin
+        .firestore()
+        .doc(getUserDocument(userUid))
+        .get();
+
       const callConfig = callConfigSnapshot.data() as CallConfig;
+      const userData = userDataSnapshot.data() as UserData;
 
       console.log("Calling witg CallConfig:", callConfig);
 
@@ -46,6 +54,7 @@ export const testCall = functions
           callConfig.soundFile,
           userUid,
           callConfigUid,
+          userData.phoneNumber,
         );
 
         await admin
