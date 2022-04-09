@@ -22,17 +22,74 @@
     <div class="flex justify-between">
       <app-modal>
         <button parent class="button-primary self-end text-sm p-1">
-          <i class="fa-light fa-microphone-lines"></i> Change Audio
+          <i class="fa-light fa-pen-to-square"></i> Edit
         </button>
         <div child class="flex flex-col">
-          <h1 class="font-bold text-lg self-center">Recording</h1>
+          <h1 class="font-bold text-lg self-center">Edit</h1>
 
           <div class="-mx-10 py-4">
             <hr />
           </div>
 
+          <h2 class="font-bold">Details</h2>
+
+          <form
+            class="flex flex-col space-y-4"
+            [formGroup]="updateCallConfigForm"
+            (ngSubmit)="updateCallConfig()"
+          >
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs font-bold">Scheduled call:</label>
+              <input
+                formControlName="cron"
+                class="p-2 border rounded-md"
+                type="text"
+                placeholder="e.g. Every sunday at 7pm"
+                autocomplete="off"
+                data-lpignore="true"
+                data-form-type="other"
+              />
+
+              <div class="text-xs flex space-x-2 text-gray-500">
+                <strong
+                  ><i class="fa-regular fa-calendar-clock"></i> Cron
+                  Preview:</strong
+                >
+                <span *ngIf="cron$ | async as cron">
+                  {{ cron | naturalCron | cleanCron }}
+                </span>
+
+                <span *ngIf="!(cron$ | async)">Type something above...</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs font-bold">Recipient's Phone Number:</label>
+
+              <input
+                formControlName="toNumber"
+                class="p-2 border rounded-md"
+                type="text"
+                placeholder="Has to begin with the region code: +44 etc. No spaces!"
+                autocomplete="off"
+                data-lpignore="true"
+                data-form-type="other"
+              />
+            </div>
+
+            <button class="button-primary" type="submit">
+              <i class="fa-light fa-alarm-clock"></i> Update
+            </button>
+          </form>
+
+          <div class="-mx-10 py-4">
+            <hr />
+          </div>
+
+          <h2 class="font-bold">Recording</h2>
+
           <app-audio-recorder
-            class="self-center pt-40"
+            class="self-center pt-10"
             [userUid]="user.uid"
             [callConfigUid]="callConfigUid"
           ></app-audio-recorder>

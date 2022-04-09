@@ -6,17 +6,21 @@ import {
   docData,
   collectionSnapshots,
   QueryDocumentSnapshot,
+  doc,
+  DocumentReference,
+  Timestamp,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { map, Observable, take } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@angular/fire/auth';
-import { Timestamp } from 'firebase/firestore';
 import { HttpClient } from '@angular/common/http';
 
 import { CallConfig, Call } from '@models';
 import {
   getCallCollectionReference,
   getCallConfigDocumentReference,
+  notIdenticalTo,
 } from '@common';
 
 @Component({
@@ -32,8 +36,11 @@ export class CallConfigComponent {
   private readonly callCollectionReference: CollectionReference<
     Call<Timestamp>
   >;
+  private readonly callConfigDocumentReference: DocumentReference<CallConfig>;
   public readonly callConfigUid: string;
   public readonly user: User;
+  public readonly updateCallConfigForm: FormGroup;
+  public readonly cron$: Observable<string>;
 
   constructor(
     route: ActivatedRoute,
@@ -46,13 +53,13 @@ export class CallConfigComponent {
     ) as string;
     this.user = route.snapshot.data['user'] as User;
 
-    this.callConfig$ = docData(
-      getCallConfigDocumentReference(
-        firestore,
-        this.user.uid,
-        this.callConfigUid
-      )
+    this.callConfigDocumentReference = getCallConfigDocumentReference(
+      firestore,
+      this.user.uid,
+      this.callConfigUid
     );
+
+    this.callConfig$ = docData(this.callConfigDocumentReference);
 
     this.callCollectionReference = getCallCollectionReference(
       firestore,
@@ -73,6 +80,28 @@ export class CallConfigComponent {
 
     this.createAudioForm = fb.group({
       audio: [''],
+    });
+
+    this.updateCallConfigForm = fb.group({
+      cron: [
+        '',
+        Validators.compose([
+          Validators.required,
+          notIdenticalTo('* * * * ? *'),
+        ]),
+      ],
+      toNumber: ['', Validators.required],
+    });
+
+    this.cron$ = this.updateCallConfigForm.valueChanges.pipe(
+      map((f) => f.cron)
+    );
+
+    this.callConfig$.pipe(take(1)).subscribe((config) => {
+      this.updateCallConfigForm.setValue({
+        cron: config.cron,
+        toNumber: config.toNumber,
+      });
     });
   }
 
@@ -97,5 +126,16 @@ export class CallConfigComponent {
       )
       .pipe(take(1))
       .subscribe();
+  }
+
+  public async updateCallConfig(): Promise<void> {
+    if (!this.updateCallConfigForm.valid) {
+      return;
+    }
+
+    await updateDoc(this.callConfigDocumentReference, {
+      cron: this.updateCallConfigForm.value.cron,
+      toNumber: this.updateCallConfigForm.value.toNumber,
+    });
   }
 }
