@@ -71,9 +71,31 @@
         [routerLink]="['/call-configs', callConfig.id]"
       >
         <h2 class="font-bold text-xl">{{ callConfig.data().cron }}</h2>
-        <p class="text-xs text-gray-700">
-          ({{ callConfig.data().cron | naturalCron | cleanCron }})
-        </p>
+        <div class="flex items-center space-x-2">
+          <p class="text-xs text-gray-700">
+            ({{ callConfig.data().cron | naturalCron | cleanCron }})
+          </p>
+
+          <div class="relative inline-block" *ngIf="callConfig.data().enabled">
+            <div
+              class="animate-ping w-full h-full absolute bg-green-200 inbline-block rounded-full -z-10"
+            ></div>
+            <div
+              class="rounded-full text-xs bg-green-500 uppercase px-2 font-bold text-white"
+            >
+              Enabled
+            </div>
+          </div>
+
+          <div class="relative inline-block" *ngIf="!callConfig.data().enabled">
+            <div
+              class="rounded-full text-xs bg-red-500 uppercase px-2 font-bold text-white"
+            >
+              Disabled
+            </div>
+          </div>
+        </div>
+
         <p class="py-2">Number: {{ callConfig.data().toNumber }}</p>
       </div>
       <button

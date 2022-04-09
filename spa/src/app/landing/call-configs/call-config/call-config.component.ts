@@ -138,4 +138,12 @@ export class CallConfigComponent {
       toNumber: this.updateCallConfigForm.value.toNumber,
     });
   }
+
+  public async toggle(): Promise<void> {
+    this.callConfig$.pipe(take(1)).subscribe(async (config) => {
+      await updateDoc(this.callConfigDocumentReference, {
+        enabled: !config.enabled,
+      });
+    });
+  }
 }

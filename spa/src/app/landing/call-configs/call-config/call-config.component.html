@@ -5,9 +5,31 @@
   >
     <div class="space-y-1">
       <h1 class="font-bold text-3xl">{{ callConfig.cron }}</h1>
-      <p class="text-xs text-gray-700">
-        ({{ callConfig.cron | naturalCron | cleanCron }})
-      </p>
+
+      <div class="flex items-center space-x-4">
+        <div class="text-xs text-gray-700 flex items-center">
+          ({{ callConfig.cron | naturalCron | cleanCron }})
+        </div>
+        <div class="relative inline-block" *ngIf="callConfig.enabled">
+          <div
+            class="animate-ping w-full h-full absolute bg-green-200 inbline-block rounded-full -z-10"
+          ></div>
+          <div
+            class="rounded-full text-xs bg-green-500 uppercase px-2 font-bold text-white"
+          >
+            Enabled
+          </div>
+        </div>
+
+        <div class="relative inline-block" *ngIf="!callConfig.enabled">
+          <div
+            class="rounded-full text-xs bg-red-500 uppercase px-2 font-bold text-white"
+          >
+            Disabled
+          </div>
+        </div>
+      </div>
+
       <p class="py-2">
         <span class="font-bold">Number to call:</span> {{ callConfig.toNumber }}
       </p>
@@ -21,7 +43,7 @@
 
     <div class="flex justify-between">
       <app-modal>
-        <button parent class="button-primary self-end text-sm p-1">
+        <button parent class="button-primary self-end text-sm py-1 px-2">
           <i class="fa-light fa-pen-to-square"></i> Edit
         </button>
         <div child class="flex flex-col">
@@ -86,10 +108,29 @@
             <hr />
           </div>
 
+          <h2 class="font-bold">Options</h2>
+
+          <div class="flex space-x-2 items-center my-2">
+            <div
+              class="w-16 h-8 bg-black p-1 flex items-center rounded-full cursor-pointer transition-all"
+              (click)="toggle()"
+              [class.bg-green-500]="callConfig.enabled"
+              [class.justify-end]="callConfig.enabled"
+            >
+              <div class="bg-white h-6 w-6 rounded-full"></div>
+            </div>
+
+            <div class="font-bold">Enable</div>
+          </div>
+
+          <div class="-mx-10 py-4">
+            <hr />
+          </div>
+
           <h2 class="font-bold">Recording</h2>
 
           <app-audio-recorder
-            class="self-center pt-10"
+            class="self-center"
             [userUid]="user.uid"
             [callConfigUid]="callConfigUid"
           ></app-audio-recorder>

@@ -62,24 +62,34 @@ export const checkPendingCalls = functions
           const scheduledDate = schedule.prev().toDate();
 
           if (call.createdAt.toDate() < scheduledDate) {
-            const call = await makeCall(
-              callConfig.toNumber,
-              process.env.TWILIO_ACCOUNT_SID ?? "",
-              process.env.TWILIO_AUTH_TOKEN ?? "",
-              callConfig.soundFile,
-              user.id,
-              callConfigDoc.id,
-              userData.phoneNumber,
-            );
+            if (callConfig.enabled) {
+              const call = await makeCall(
+                callConfig.toNumber,
+                process.env.TWILIO_ACCOUNT_SID ?? "",
+                process.env.TWILIO_AUTH_TOKEN ?? "",
+                callConfig.soundFile,
+                user.id,
+                callConfigDoc.id,
+                userData.phoneNumber,
+              );
 
-            await admin
-              .firestore()
-              .collection(getCallsCollection(user.id, callConfigDoc.id))
-              .doc(call.sid)
-              .set({
-                createdAt: admin.firestore.FieldValue.serverTimestamp(),
-                status: call.status,
-              });
+              await admin
+                .firestore()
+                .collection(getCallsCollection(user.id, callConfigDoc.id))
+                .doc(call.sid)
+                .set({
+                  createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                  status: call.status,
+                });
+            } else {
+              await admin
+                .firestore()
+                .collection(getCallsCollection(user.id, callConfigDoc.id))
+                .add({
+                  createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                  status: "dummy",
+                });
+            }
           }
         } else {
           // Note: There is no calls and no dummy record

@@ -71,6 +71,7 @@ export class DashboardComponent {
       cron: this.createCallConfigForm.value.cron,
       toNumber: this.createCallConfigForm.value.toNumber,
       soundFile: 'http://demo.twilio.com/docs/classic.mp3',
+      enabled: true,
     });
 
     const callsCollectionReference = getCallCollectionReference(
