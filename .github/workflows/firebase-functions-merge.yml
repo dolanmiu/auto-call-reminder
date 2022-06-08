@@ -20,7 +20,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
       - name: Build
         run: npm run build
       - name: Archive Production Artifact
@@ -35,7 +35,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
       - name: Prettier
         run: npm run prettier
       - name: Lint
@@ -48,7 +48,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
       - name: Download Artifact
         uses: actions/download-artifact@master
         with:
