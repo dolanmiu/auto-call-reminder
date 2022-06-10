@@ -6,7 +6,6 @@ import {
   docData,
   collectionSnapshots,
   QueryDocumentSnapshot,
-  doc,
   DocumentReference,
   Timestamp,
   updateDoc,
@@ -15,6 +14,7 @@ import { map, Observable, take } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@angular/fire/auth';
 import { HttpClient } from '@angular/common/http';
+import { addDoc } from 'firebase/firestore';
 
 import { CallConfig, Call } from '@models';
 import {
@@ -143,6 +143,10 @@ export class CallConfigComponent {
     this.callConfig$.pipe(take(1)).subscribe(async (config) => {
       await updateDoc(this.callConfigDocumentReference, {
         enabled: !config.enabled,
+      });
+      await addDoc(this.callCollectionReference, {
+        createdAt: Timestamp.now(),
+        status: 'dummy',
       });
     });
   }
