@@ -18,8 +18,11 @@ import {
   getCallCollectionReference,
   getCallConfigCollectionReference,
   notIdenticalTo,
+  isValidCron,
+  isNotTimeCron,
 } from '@common';
 import { CallConfig } from '@models';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -52,6 +55,8 @@ export class DashboardComponent {
         Validators.compose([
           Validators.required,
           notIdenticalTo('* * * * ? *'),
+          isValidCron(),
+          isNotTimeCron(),
         ]),
       ],
       toNumber: ['', Validators.required],

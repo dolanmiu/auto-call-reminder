@@ -26,6 +26,33 @@
 
         <span *ngIf="!(cron$ | async)">Type something above...</span>
       </div>
+
+      <div
+        *ngIf="createCallConfigForm.get('cron')?.errors as errors"
+        class="text-xs flex space-x-2 text-red-500"
+      >
+        <span *ngIf="errors['invalidCron'] && !errors['identical']"
+          >Invalid Cron! Please check. Make sure to use colon ':' for times.
+          E.g. 2:15pm</span
+        >
+        <span
+          *ngIf="
+            !errors['invalidCron'] && errors['identical'] && !errors['required']
+          "
+          >Invalid Cron! Please check.</span
+        >
+        <span
+          *ngIf="
+            errors['required'] && errors['identical'] && errors['isNotTimeCron']
+          "
+          >Please enter a value</span
+        >
+
+        <span *ngIf="!errors['required'] && errors['isNotTimeCron']"
+          >Make sure that there is a time specified in the Cron, otherwise it
+          will call every minute!</span
+        >
+      </div>
     </div>
 
     <div class="flex flex-col space-y-1">
@@ -41,8 +68,11 @@
         data-form-type="other"
       />
     </div>
-
-    <button class="button-primary" type="submit">
+    <button
+      class="button-primary"
+      type="submit"
+      [disabled]="!createCallConfigForm.valid"
+    >
       <i class="fa-light fa-alarm-clock"></i> Create Config
     </button>
   </form>
