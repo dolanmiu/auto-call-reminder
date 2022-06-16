@@ -8,7 +8,7 @@ import {
   doc,
   deleteDoc,
 } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@angular/fire/auth';
 import { map, Observable } from 'rxjs';
@@ -30,7 +30,7 @@ import { CallConfig } from '@models';
 })
 export class DashboardComponent {
   public readonly callConfigs$: Observable<QueryDocumentSnapshot<CallConfig>[]>;
-  public readonly createCallConfigForm: FormGroup;
+  public readonly createCallConfigForm: UntypedFormGroup;
   public readonly cron$: Observable<string>;
   private readonly callConfigCollectionReference: CollectionReference<CallConfig>;
   private readonly user: User;
@@ -38,7 +38,7 @@ export class DashboardComponent {
   constructor(
     private readonly firestore: Firestore,
     route: ActivatedRoute,
-    fb: FormBuilder
+    fb: UntypedFormBuilder
   ) {
     this.user = route.snapshot.data['user'] as User;
 

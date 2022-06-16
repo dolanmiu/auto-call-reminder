@@ -5,7 +5,7 @@ import {
   DocumentReference,
   updateDoc,
 } from '@angular/fire/firestore';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'firebase/auth';
 import { take } from 'rxjs';
@@ -20,12 +20,12 @@ import { UserData } from '@models';
   styleUrls: ['./my-account.component.scss'],
 })
 export class MyAccountComponent {
-  public readonly accountForm: FormGroup;
+  public readonly accountForm: UntypedFormGroup;
   private readonly docReference: DocumentReference<UserData>;
 
   public constructor(
     private readonly authService: AuthService,
-    fb: FormBuilder,
+    fb: UntypedFormBuilder,
     firestore: Firestore,
     route: ActivatedRoute
   ) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../shared/auth.service';
 
 @Component({
@@ -8,9 +8,9 @@ import { AuthService } from '../shared/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  public readonly loginForm: FormGroup;
+  public readonly loginForm: UntypedFormGroup;
 
-  constructor(fb: FormBuilder, private readonly authService: AuthService) {
+  constructor(fb: UntypedFormBuilder, private readonly authService: AuthService) {
     this.loginForm = fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],

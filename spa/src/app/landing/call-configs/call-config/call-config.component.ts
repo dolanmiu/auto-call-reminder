@@ -11,7 +11,7 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { map, Observable, take } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from '@angular/fire/auth';
 import { HttpClient } from '@angular/common/http';
 import { addDoc } from 'firebase/firestore';
@@ -31,7 +31,7 @@ import {
 export class CallConfigComponent {
   public readonly calls$: Observable<QueryDocumentSnapshot<Call<Timestamp>>[]>;
   public readonly callConfig$: Observable<CallConfig>;
-  public readonly createAudioForm: FormGroup;
+  public readonly createAudioForm: UntypedFormGroup;
   public makingCall = false;
   private readonly callCollectionReference: CollectionReference<
     Call<Timestamp>
@@ -39,13 +39,13 @@ export class CallConfigComponent {
   private readonly callConfigDocumentReference: DocumentReference<CallConfig>;
   public readonly callConfigUid: string;
   public readonly user: User;
-  public readonly updateCallConfigForm: FormGroup;
+  public readonly updateCallConfigForm: UntypedFormGroup;
   public readonly cron$: Observable<string>;
 
   constructor(
     route: ActivatedRoute,
     firestore: Firestore,
-    fb: FormBuilder,
+    fb: UntypedFormBuilder,
     private readonly http: HttpClient
   ) {
     this.callConfigUid = route.parent?.snapshot.paramMap.get(
