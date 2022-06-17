@@ -11,17 +11,25 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { map, Observable, take } from 'rxjs';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '@angular/fire/auth';
 import { HttpClient } from '@angular/common/http';
 import { addDoc } from 'firebase/firestore';
 
 import { CallConfig, Call } from '@models';
 import {
+  filterNullish,
   getCallCollectionReference,
   getCallConfigDocumentReference,
+  isNotTimeCron,
+  isValidCron,
   notIdenticalTo,
 } from '@common';
+
+interface CallConfigForm {
+  cron: FormControl<string>;
+  toNumber: FormControl<string>;
+}
 
 @Component({
   selector: 'app-call-config',
@@ -31,7 +39,6 @@ import {
 export class CallConfigComponent {
   public readonly calls$: Observable<QueryDocumentSnapshot<Call<Timestamp>>[]>;
   public readonly callConfig$: Observable<CallConfig>;
-  public readonly createAudioForm: UntypedFormGroup;
   public makingCall = false;
   private readonly callCollectionReference: CollectionReference<
     Call<Timestamp>
@@ -39,13 +46,12 @@ export class CallConfigComponent {
   private readonly callConfigDocumentReference: DocumentReference<CallConfig>;
   public readonly callConfigUid: string;
   public readonly user: User;
-  public readonly updateCallConfigForm: UntypedFormGroup;
+  public readonly updateCallConfigForm: FormGroup<CallConfigForm>;
   public readonly cron$: Observable<string>;
 
   constructor(
     route: ActivatedRoute,
     firestore: Firestore,
-    fb: UntypedFormBuilder,
     private readonly http: HttpClient
   ) {
     this.callConfigUid = route.parent?.snapshot.paramMap.get(
@@ -78,23 +84,25 @@ export class CallConfigComponent {
       )
     );
 
-    this.createAudioForm = fb.group({
-      audio: [''],
-    });
-
-    this.updateCallConfigForm = fb.group({
-      cron: [
-        '',
-        Validators.compose([
+    this.updateCallConfigForm = new FormGroup<CallConfigForm>({
+      cron: new FormControl('', {
+        validators: Validators.compose([
           Validators.required,
           notIdenticalTo('* * * * ? *'),
+          isValidCron(),
+          isNotTimeCron(),
         ]),
-      ],
-      toNumber: ['', Validators.required],
+        nonNullable: true,
+      }),
+      toNumber: new FormControl('', {
+        validators: Validators.required,
+        nonNullable: true,
+      }),
     });
 
     this.cron$ = this.updateCallConfigForm.valueChanges.pipe(
-      map((f) => f.cron)
+      map((f) => f.cron),
+      filterNullish()
     );
 
     this.callConfig$.pipe(take(1)).subscribe((config) => {

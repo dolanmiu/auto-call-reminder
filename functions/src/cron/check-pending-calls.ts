@@ -56,7 +56,14 @@ export const checkPendingCalls = functions
           });
           const cronString = cleanCron(getCronString(callConfig.cron));
           console.log(`Cron for cron phrase '${callConfig.cron}':`, cronString);
-          cronInstance.fromString(cronString);
+
+          try {
+            cronInstance.fromString(cronString);
+          } catch (e) {
+            console.error(e);
+            continue;
+          }
+
           const currentDate = admin.firestore.Timestamp.now().toDate();
           const schedule = cronInstance.schedule(currentDate);
           const scheduledDate = schedule.prev().toDate();
