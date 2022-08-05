@@ -8,7 +8,11 @@ import {
   doc,
   deleteDoc,
 } from '@angular/fire/firestore';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '@angular/fire/auth';
 import { map, Observable } from 'rxjs';
@@ -20,6 +24,7 @@ import {
   notIdenticalTo,
   isValidCron,
   isNotTimeCron,
+  getUserFromRouteData,
 } from '@common';
 import { CallConfig } from '@models';
 
@@ -40,7 +45,7 @@ export class DashboardComponent {
     route: ActivatedRoute,
     fb: UntypedFormBuilder
   ) {
-    this.user = route.snapshot.data['user'] as User;
+    this.user = getUserFromRouteData(route);
 
     this.callConfigCollectionReference = getCallConfigCollectionReference(
       firestore,

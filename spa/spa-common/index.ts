@@ -3,3 +3,4 @@ export * from './document';
 export * from './collections';
 export * from './validators';
 export * from './rxjs';
+export * from './route-util';

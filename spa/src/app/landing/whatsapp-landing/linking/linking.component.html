@@ -1,0 +1,13 @@
+<div class="flex flex-col m-4 space-y-2">
+  <h1 class="font-bold text-2xl">Linking</h1>
+  <p class="self-center">Scan this code to link your WhatsApp account</p>
+  <div class="self-center" *ngIf="qrCode$ | async as qrCode">
+    <qr-code [value]="qrCode"></qr-code>
+  </div>
+  <p class="text-xs">
+    It may not be possible to scan this as you have WhatsApp installed on the
+    same device as this one! To work around this, login to Phone Scheduler from
+    another device like a computer, or a family/friend's phone, and then use
+    your current phone to scan.
+  </p>
+</div>

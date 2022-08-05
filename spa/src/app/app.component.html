@@ -1,1 +1,17 @@
+<div
+  class="flex flex-col m-4 space-y-8 items-center justify-center h-screen"
+  *ngIf="loading"
+>
+  <div><i class="fa-duotone fa-spinner-third fa-spin text-7xl"></i></div>
+  <div class="space-y-4" *ngIf="guardType === 'whatsapp'">
+    <p class="text-center font-bold">
+      Talking to WhatsApp <i class="fa-brands fa-whatsapp"></i> servers...
+    </p>
+    <p class="text-center text-xs">
+      This may take a while. Please wait...
+      <i class="fa-light fa-hourglass-clock"></i>
+    </p>
+  </div>
+</div>
+
 <router-outlet></router-outlet>

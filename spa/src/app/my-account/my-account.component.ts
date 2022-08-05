@@ -5,7 +5,11 @@ import {
   DocumentReference,
   updateDoc,
 } from '@angular/fire/firestore';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'firebase/auth';
 import { take } from 'rxjs';

@@ -11,7 +11,7 @@ import { AuthResolver } from '@shared';
 
 import { LandingComponent } from './landing.component';
 
-const redirectUnauthorizedToLogin = (
+export const redirectUnauthorizedToLogin = (
   _: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => redirectUnauthorizedTo(`login?redirectUrl=${state.url}`);
@@ -20,6 +20,8 @@ const routes: Routes = [
   {
     path: '',
     component: LandingComponent,
+    canActivate: [AuthGuard],
+    resolve: { user: AuthResolver },
     children: [
       {
         path: '',
@@ -30,9 +32,7 @@ const routes: Routes = [
         path: 'dashboard',
         loadChildren: () =>
           import(`./dashboard/dashboard.module`).then((m) => m.DashboardModule),
-        canActivate: [AuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
-        resolve: { user: AuthResolver },
       },
       {
         path: 'call-configs',
@@ -40,9 +40,15 @@ const routes: Routes = [
           import(`./call-configs/call-configs.module`).then(
             (m) => m.CallConfigsModule
           ),
-        canActivate: [AuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
-        resolve: { user: AuthResolver },
+      },
+      {
+        path: 'whatsapp',
+        loadChildren: () =>
+          import(`./whatsapp-landing/whatsapp-landing.module`).then(
+            (m) => m.WhatsappLandingModule
+          ),
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
       },
     ],
   },
