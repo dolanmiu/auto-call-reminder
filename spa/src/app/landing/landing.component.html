@@ -3,18 +3,36 @@
 >
   <div
     class="flex items-center space-x-2 cursor-pointer"
-    [routerLink]="['/dashboard']"
+    [routerLink]="['../']"
   >
     <i class="fa-duotone fa-cat-space text-xl"></i>
     <span class="font-bold">Phone Scheduler</span>
   </div>
 
-  <button
-    class="font-bold space-x-2 text-sm bg-black text-white rounded-full flex items-center justify-center w-7 h-7"
-    [routerLink]="['/my-account']"
-  >
-    <i class="fa-solid fa-user text-xs"></i>
-  </button>
+  <div class="flex space-x-2">
+    <button
+      class="font-bold space-x-2 text-sm rounded-full flex items-center justify-center w-7 h-7 border border-black"
+      [routerLinkActive]="['bg-blue-500']"
+      [routerLink]="['/call']"
+    >
+      <i class="fa-solid fa-phone"></i>
+    </button>
+
+    <button
+      class="font-bold space-x-2 text-sm rounded-full flex items-center justify-center w-7 h-7 border border-black"
+      [routerLink]="['/whatsapp']"
+      [routerLinkActive]="['bg-green-500']"
+    >
+      <i class="fa-brands fa-whatsapp"></i>
+    </button>
+
+    <button
+      class="font-bold space-x-2 text-sm bg-black text-white rounded-full flex items-center justify-center w-7 h-7"
+      [routerLink]="['/my-account']"
+    >
+      <i class="fa-solid fa-user text-xs"></i>
+    </button>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

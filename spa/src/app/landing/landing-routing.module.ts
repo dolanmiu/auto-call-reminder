@@ -22,25 +22,19 @@ const routes: Routes = [
     component: LandingComponent,
     canActivate: [AuthGuard],
     resolve: { user: AuthResolver },
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
     children: [
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'call',
         pathMatch: 'full',
       },
       {
-        path: 'dashboard',
+        path: 'call',
         loadChildren: () =>
-          import(`./dashboard/dashboard.module`).then((m) => m.DashboardModule),
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
-      },
-      {
-        path: 'call-configs',
-        loadChildren: () =>
-          import(`./call-configs/call-configs.module`).then(
-            (m) => m.CallConfigsModule
+          import(`./call-landing/call-landing.module`).then(
+            (m) => m.CallLandingModule
           ),
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
       },
       {
         path: 'whatsapp',
@@ -48,7 +42,6 @@ const routes: Routes = [
           import(`./whatsapp-landing/whatsapp-landing.module`).then(
             (m) => m.WhatsappLandingModule
           ),
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
       },
     ],
   },

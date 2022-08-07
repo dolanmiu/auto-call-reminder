@@ -11,7 +11,11 @@
       This may take a while. Please wait...
       <i class="fa-light fa-hourglass-clock"></i>
     </p>
-    <p class="text-center text-xs">{{ message$ | async }}</p>
+    <p
+      class="text-center text-xs rounded-full py-1 px-2 text-white bg-green-500"
+    >
+      {{ message$ | async }}
+    </p>
   </div>
 </div>
 

@@ -53,8 +53,6 @@
             <hr />
           </div>
 
-          <h2 class="font-bold">Details</h2>
-
           <form
             class="flex flex-col space-y-4"
             [formGroup]="updateCallConfigForm"
@@ -130,35 +128,27 @@
               />
             </div>
 
-            <button class="button-primary" type="submit">
-              <i class="fa-light fa-alarm-clock"></i> Update
-            </button>
+            <div class="flex space-x-4">
+              <div class="flex space-x-2 items-center my-2">
+                <div
+                  class="w-16 h-8 bg-black p-1 flex items-center rounded-full cursor-pointer transition-all"
+                  (click)="toggle()"
+                  [class.bg-green-500]="callConfig.enabled"
+                  [class.justify-end]="callConfig.enabled"
+                >
+                  <div class="bg-white h-6 w-6 rounded-full"></div>
+                </div>
+              </div>
+
+              <button class="button-primary flex-grow" type="submit">
+                <i class="fa-light fa-alarm-clock"></i> Update
+              </button>
+            </div>
           </form>
 
           <div class="-mx-10 py-4">
             <hr />
           </div>
-
-          <h2 class="font-bold">Options</h2>
-
-          <div class="flex space-x-2 items-center my-2">
-            <div
-              class="w-16 h-8 bg-black p-1 flex items-center rounded-full cursor-pointer transition-all"
-              (click)="toggle()"
-              [class.bg-green-500]="callConfig.enabled"
-              [class.justify-end]="callConfig.enabled"
-            >
-              <div class="bg-white h-6 w-6 rounded-full"></div>
-            </div>
-
-            <div class="font-bold">Enable</div>
-          </div>
-
-          <div class="-mx-10 py-4">
-            <hr />
-          </div>
-
-          <h2 class="font-bold">Recording</h2>
 
           <app-audio-recorder
             class="self-center"

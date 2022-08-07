@@ -18,7 +18,7 @@ export class WhatsappAuthService {
   public socket!: Socket;
   private readonly subject = new BehaviorSubject<WhatsAppAuthResponse>({
     status: WhatsAppAuthStatus.PENDING,
-    message: '',
+    message: 'Pending...',
   });
   private readonly sideAuthSubject = new BehaviorSubject<
     { message: string } | undefined
