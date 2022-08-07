@@ -63,7 +63,7 @@ export class WhatsappAuthService {
 
   public connectToWhatsApp(user: User) {
     if (!this.socket) {
-      this.socket = io('ws://whatsapp-auth.glitch.me/', {
+      this.socket = io('wss://whatsapp-auth.glitch.me/', {
         secure: true,
         reconnectionDelayMax: 10000,
         auth: {

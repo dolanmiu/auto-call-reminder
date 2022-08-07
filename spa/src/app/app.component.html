@@ -1,5 +1,7 @@
+<router-outlet></router-outlet>
+
 <div
-  class="flex flex-col m-4 space-y-8 items-center justify-center h-screen"
+  class="flex flex-col space-y-8 items-center justify-center h-screen fixed top-0 left-0 w-screen bg-white"
   *ngIf="loading"
 >
   <div><i class="fa-duotone fa-spinner-third fa-spin text-7xl"></i></div>
@@ -17,7 +19,10 @@
       {{ message$ | async }}
     </p>
   </div>
-  <button class="button-warning rounded-full pl-2 pr-4 py-1 font-normal flex items-center space-x-2 text-lg" [routerLink]="['/']"><i class="fa-light fa-circle-xmark"></i> <span>Cancel</span></button>
+  <button
+    class="button-warning rounded-full pl-2 pr-4 py-1 font-normal flex items-center space-x-2 text-lg"
+    [routerLink]="['/']"
+  >
+    <i class="fa-light fa-circle-xmark"></i> <span>Cancel</span>
+  </button>
 </div>
-
-<router-outlet></router-outlet>
