@@ -21,3 +21,23 @@ export const getCallDocument = (
   callConfigUid: string,
   callUid: string,
 ): string => `${getCallsCollection(userUid, callConfigUid)}/${callUid}`;
+
+export const getWhatsAppConfigCollection = (userUid: string): string =>
+  `${getUserDocument(userUid)}/whatsapp-configs`;
+
+export const getWhatsAppConfigDocument = (
+  userUid: string,
+  configUid: string,
+): string => `${getWhatsAppConfigCollection(userUid)}/${configUid}`;
+
+export const getWhatsAppMessagesCollection = (
+  userUid: string,
+  configUid: string,
+): string => `${getWhatsAppConfigDocument(userUid, configUid)}/messages`;
+
+export const getWhatsAppMessageDocument = (
+  userUid: string,
+  configUid: string,
+  messageUid: string,
+): string =>
+  `${getWhatsAppMessagesCollection(userUid, configUid)}/${messageUid}`;

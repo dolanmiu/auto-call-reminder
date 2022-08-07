@@ -1,1 +1,135 @@
-<p>dashboard works!</p>
+<div class="m-4">
+  <form
+    class="flex flex-col space-y-4"
+    [formGroup]="createConfigForm"
+    (ngSubmit)="createConfig()"
+  >
+    <div class="flex flex-col space-y-1">
+      <label class="text-xs font-bold">Scheduled WhatsApp message:</label>
+      <input
+        formControlName="cron"
+        class="p-2 border rounded-md"
+        type="text"
+        placeholder="e.g. Every sunday at 7pm"
+        autocomplete="off"
+        data-lpignore="true"
+        data-form-type="other"
+      />
+
+      <div class="text-xs flex space-x-2 text-gray-500">
+        <strong
+          ><i class="fa-regular fa-calendar-clock"></i> Cron Preview:</strong
+        >
+        <span *ngIf="cron$ | async as cron">
+          {{ cron | naturalCron | cleanCron }}
+        </span>
+
+        <span *ngIf="!(cron$ | async)">Type something above...</span>
+      </div>
+
+      <div
+        *ngIf="createConfigForm.get('cron')?.errors as errors"
+        class="text-xs flex space-x-2 text-red-500"
+      >
+        <span *ngIf="errors['invalidCron'] && !errors['identical']"
+          >Invalid Cron! Please check. Make sure to use colon ':' for times.
+          E.g. 2:15pm</span
+        >
+        <span
+          *ngIf="
+            !errors['invalidCron'] && errors['identical'] && !errors['required']
+          "
+          >Invalid Cron! Please check.</span
+        >
+        <span
+          *ngIf="
+            errors['required'] && errors['identical'] && errors['isNotTimeCron']
+          "
+          >Please enter a value</span
+        >
+
+        <span *ngIf="!errors['required'] && errors['isNotTimeCron']"
+          >Make sure that there is a time specified in the Cron, otherwise it
+          will message every minute!</span
+        >
+      </div>
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label class="text-xs font-bold">WhatsApp Chat:</label>
+      <select
+        class="p-2 border rounded-md"
+        formControlName="to"
+        *ngIf="chats$ | async as chats"
+      >
+        <option [value]="chat.id._serialized" *ngFor="let chat of chats">
+          {{ chat.name }}
+        </option>
+      </select>
+    </div>
+    <button
+      class="button-primary"
+      type="submit"
+      [disabled]="!createConfigForm.valid"
+    >
+      <i class="fa-light fa-alarm-clock"></i> Create Config
+    </button>
+  </form>
+
+  <div class="py-4 -mx-4">
+    <hr />
+  </div>
+
+  <h1 class="font-bold text-2xl pb-4">WhatsApp Configurations</h1>
+
+  <div class="space-y-4" *ngIf="whatsAppConfigs$ | async as configs">
+    <div
+      *ngIf="configs.length === 0"
+      class="flex flex-col items-center py-8 space-y-2"
+    >
+      <i class="fa-light fa-empty-set text-4xl"></i>
+      <p class="font-bold">No Configurations</p>
+    </div>
+
+    <div
+      class="flex flex-col border rounded-md relative"
+      *ngFor="let config of configs"
+    >
+      <div class="cursor-pointer p-4" [routerLink]="['../configs', config.id]">
+        <h2 class="font-bold text-xl">{{ config.data().cron }}</h2>
+        <div class="flex items-center space-x-2">
+          <p class="text-xs text-gray-700">
+            ({{ config.data().cron | naturalCron | cleanCron }})
+          </p>
+
+          <div class="relative inline-block" *ngIf="config.data().enabled">
+            <div
+              class="animate-ping w-full h-full absolute bg-green-200 inbline-block rounded-full -z-10"
+            ></div>
+            <div
+              class="rounded-full text-xs bg-green-500 uppercase px-2 font-bold text-white"
+            >
+              Enabled
+            </div>
+          </div>
+
+          <div class="relative inline-block" *ngIf="!config.data().enabled">
+            <div
+              class="rounded-full text-xs bg-red-500 uppercase px-2 font-bold text-white"
+            >
+              Disabled
+            </div>
+          </div>
+        </div>
+
+        <p class="py-2">Number: {{ config.data().to }}</p>
+      </div>
+      <button
+        class="button-warning absolute bottom-2 right-2 text-xs p-1"
+        (click)="deleteConfig(config)"
+      >
+        Delete <i class="fa-thin fa-trash-can"></i>
+      </button>
+    </div>
+  </div>
+</div>

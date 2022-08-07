@@ -1,7 +1,11 @@
 import { DocumentReference, Firestore, doc } from '@angular/fire/firestore';
 
-import { UserData, CallConfig } from '@models';
-import { getUserDocument, getCallConfigDocument } from '@constants';
+import { UserData, CallConfig, WhatsAppConfig } from '@models';
+import {
+  getUserDocument,
+  getCallConfigDocument,
+  getWhatsAppConfigDocument,
+} from '@constants';
 import { oneToOneConverter } from '@common';
 
 export const getUserDocumentReference = (
@@ -19,4 +23,13 @@ export const getCallConfigDocumentReference = (
 ): DocumentReference<CallConfig> =>
   doc(firestore, getCallConfigDocument(userUid, callConfigUid)).withConverter(
     oneToOneConverter<CallConfig>()
+  );
+
+export const getWhatsAppConfigDocumentReference = (
+  firestore: Firestore,
+  userUid: string,
+  configUid: string
+): DocumentReference<WhatsAppConfig> =>
+  doc(firestore, getWhatsAppConfigDocument(userUid, configUid)).withConverter(
+    oneToOneConverter<WhatsAppConfig>()
   );

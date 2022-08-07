@@ -7,6 +7,9 @@ import {
   Router,
 } from '@angular/router';
 
+import { GlobalMessengerService } from '@shared';
+import { Observable } from 'rxjs';
+
 @UntilDestroy()
 @Component({
   selector: 'app-root',
@@ -16,9 +19,11 @@ import {
 export class AppComponent {
   public loading = false;
   public guardType: string | undefined = undefined;
+  public message$: Observable<string>;
 
-  public constructor(router: Router) {
-    console.log('working');
+  public constructor(router: Router, messenger: GlobalMessengerService) {
+    this.message$ = messenger.message$;
+
     // https://stackoverflow.com/questions/48486623/show-loading-indicator-during-canactivate
     router.events.pipe(untilDestroyed(this)).subscribe((event) => {
       if (event instanceof GuardsCheckStart) {

@@ -1,6 +1,7 @@
 import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-
 import { User } from '@angular/fire/auth';
+
+import { WhatsAppChat } from '@models';
 
 export const getMiniAppUidFromRoute = (route: ActivatedRoute): string =>
   getParamFromRoute(route, 'miniAppUid', 'unknown');
@@ -56,6 +57,9 @@ export const getDataFromRouteSnapshot = <T, Y>(
 
 export const getUserFromRouteData = (route: ActivatedRoute): User =>
   getDataFromRoute(route, 'user');
+
+export const getChatsFromRoute = (route: ActivatedRoute): WhatsAppChat[] =>
+  getDataFromRoute(route, 'chats');
 
 export const getDataFromRoute = <T>(route: ActivatedRoute, name: string): T => {
   let output: T | undefined;

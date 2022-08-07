@@ -7,6 +7,13 @@ const routes: Routes = [
   {
     path: '',
     component: ConfigsComponent,
+    children: [
+      {
+        path: ':configUid',
+        loadChildren: () =>
+          import(`./config/config.module`).then((m) => m.ConfigModule),
+      },
+    ],
   },
 ];
 

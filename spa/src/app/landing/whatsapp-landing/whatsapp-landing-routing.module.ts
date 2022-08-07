@@ -3,6 +3,7 @@ import { AuthGuard } from '@angular/fire/auth-guard';
 import { RouterModule, Routes } from '@angular/router';
 
 import { redirectUnauthorizedToLogin } from '../landing-routing.module';
+import { ChatsResolver } from './chats.resolver';
 import { WhatsappAuthGuard } from './whatsapp-auth.guard';
 import { WhatsappLandingComponent } from './whatsapp-landing.component';
 
@@ -28,6 +29,7 @@ const routes: Routes = [
         loadChildren: () =>
           import(`./configs/configs.module`).then((m) => m.ConfigsModule),
         canActivate: [AuthGuard, WhatsappAuthGuard],
+        resolve: { chats: ChatsResolver },
         data: { authGuardPipe: redirectUnauthorizedToLogin },
       },
       {
