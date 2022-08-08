@@ -66,3 +66,11 @@ export interface WhatsAppMessage<T> {
   readonly status: string;
   readonly content: string;
 }
+
+export interface WhatsAppMessageRequest {
+  readonly userUid: string;
+  readonly chatId: string;
+  readonly message: string;
+  readonly gpt3Prompt: string;
+  readonly configUid: string;
+}

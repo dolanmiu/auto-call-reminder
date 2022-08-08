@@ -28,6 +28,9 @@ export class WhatsappAuthService {
   public readonly isAuthenticated$: Observable<boolean>;
   public readonly message$: Observable<string>;
   public readonly chats$: Observable<WhatsAppChat[]>;
+  public readonly chatsLookUpDictionary$: Observable<{
+    [key: string]: WhatsAppChat;
+  }>;
 
   public constructor() {
     this.qrCode$ = this.subject.pipe(
@@ -58,6 +61,18 @@ export class WhatsappAuthService {
       map((a) => a as WhatsAppSuccessAuthResponse),
       map((a) => a.chats),
       shareReplay()
+    );
+
+    this.chatsLookUpDictionary$ = this.chats$.pipe(
+      map((e) =>
+        e.reduce(
+          (acc, curr) => ({
+            ...acc,
+            [curr.id._serialized]: curr,
+          }),
+          {}
+        )
+      )
     );
   }
 

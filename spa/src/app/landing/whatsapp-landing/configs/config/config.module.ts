@@ -6,6 +6,7 @@ import { ModalModule, SharedModule } from '@shared';
 
 import { ConfigRoutingModule } from './config-routing.module';
 import { ConfigComponent } from './config.component';
+import { WhatsappSharedModule } from '../../whatsapp-shared/whatsapp-shared.module';
 
 @NgModule({
   declarations: [ConfigComponent],
@@ -15,6 +16,7 @@ import { ConfigComponent } from './config.component';
     SharedModule,
     ReactiveFormsModule,
     ModalModule,
+    WhatsappSharedModule,
   ],
 })
 export class ConfigModule {}

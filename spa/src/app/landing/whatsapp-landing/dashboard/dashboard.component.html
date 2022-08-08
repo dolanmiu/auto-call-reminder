@@ -122,7 +122,9 @@
           </div>
         </div>
 
-        <p class="py-2">Number: {{ config.data().to }}</p>
+        <p class="py-2">
+          Chat: {{ (config.data().to | whatsappIdToName | async)?.name }}
+        </p>
       </div>
       <button
         class="button-warning absolute bottom-2 right-2 text-xs p-1"

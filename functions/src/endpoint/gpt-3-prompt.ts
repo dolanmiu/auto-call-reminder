@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import { HttpsError } from "firebase-functions/lib/providers/https";
 
-import { Gpt3PromptRequest } from "../global-shared/models/gpt-3";
+import { Gpt3PromptRequest } from "../global-shared";
 import { predictWords } from "../util";
 
 export const gpt3Prompt = functions

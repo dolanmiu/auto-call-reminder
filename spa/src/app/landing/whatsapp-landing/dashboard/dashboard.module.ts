@@ -6,6 +6,7 @@ import { SharedModule } from '@shared';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
+import { WhatsappSharedModule } from '../whatsapp-shared/whatsapp-shared.module';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -14,6 +15,7 @@ import { DashboardComponent } from './dashboard.component';
     DashboardRoutingModule,
     ReactiveFormsModule,
     SharedModule,
+    WhatsappSharedModule,
   ],
 })
 export class DashboardModule {}

@@ -25,6 +25,7 @@ import {
   WhatsAppChat,
   WhatsAppConfig,
   WhatsAppMessage,
+  WhatsAppMessageRequest,
 } from '@models';
 import {
   filterNullish,
@@ -70,6 +71,7 @@ export class ConfigComponent {
   public readonly cron$: Observable<string>;
   public readonly chats: WhatsAppChat[];
   public readonly gp3Prompt: HttpsCallable<Gpt3PromptRequest, string[]>;
+  public readonly sendMessage: HttpsCallable<WhatsAppMessageRequest, void>;
 
   public completions: string[] = [];
 
@@ -148,6 +150,11 @@ export class ConfigComponent {
       fns,
       'gpt3Prompt'
     );
+
+    this.sendMessage = httpsCallable<WhatsAppMessageRequest, void>(
+      fns,
+      'sendWhatsAppMessage'
+    );
   }
 
   public async updateConfig(): Promise<void> {
@@ -187,5 +194,29 @@ export class ConfigComponent {
     });
 
     this.completions = output.data;
+  }
+
+  public async testMessage(): Promise<void> {
+    if (
+      !this.updateConfigForm.value.to ||
+      !this.updateConfigForm.value.message ||
+      !this.updateConfigForm.value.gpt3Prompt
+    ) {
+      return;
+    }
+
+    this.makingCall = true;
+
+    await this.sendMessage({
+      userUid: this.user.uid,
+      chatId: this.updateConfigForm.value.to,
+      message: this.updateConfigForm.value.message,
+      gpt3Prompt: this.updateConfigForm.value.gpt3Prompt,
+      configUid: this.whatsAppConfigUid,
+    });
+
+    setTimeout(() => {
+      this.makingCall = false;
+    }, 20000);
   }
 }
