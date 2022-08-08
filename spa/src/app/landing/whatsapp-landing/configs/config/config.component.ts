@@ -11,11 +11,21 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { map, Observable, take } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { User } from '@angular/fire/auth';
 import { addDoc } from 'firebase/firestore';
 
-import { WhatsAppChat, WhatsAppConfig, WhatsAppMessage } from '@models';
+import {
+  Gpt3PromptRequest,
+  WhatsAppChat,
+  WhatsAppConfig,
+  WhatsAppMessage,
+} from '@models';
 import {
   filterNullish,
   getChatsFromRoute,
@@ -26,10 +36,17 @@ import {
   isValidCron,
   notIdenticalTo,
 } from '@common';
+import {
+  Functions,
+  HttpsCallable,
+  httpsCallable,
+} from '@angular/fire/functions';
 
 interface ConfigForm {
   cron: FormControl<string>;
   to: FormControl<string>;
+  gpt3Prompt: FormControl<string>;
+  message: FormControl<string>;
 }
 
 @Component({
@@ -52,8 +69,16 @@ export class ConfigComponent {
   public readonly updateConfigForm: FormGroup<ConfigForm>;
   public readonly cron$: Observable<string>;
   public readonly chats: WhatsAppChat[];
+  public readonly gp3Prompt: HttpsCallable<Gpt3PromptRequest, string[]>;
 
-  constructor(route: ActivatedRoute, firestore: Firestore) {
+  public completions: string[] = [];
+
+  constructor(
+    route: ActivatedRoute,
+    firestore: Firestore,
+    fns: Functions,
+    fb: FormBuilder
+  ) {
     this.chats = getChatsFromRoute(route);
 
     this.whatsAppConfigUid = route.parent?.snapshot.paramMap.get(
@@ -89,20 +114,20 @@ export class ConfigComponent {
       )
     );
 
-    this.updateConfigForm = new FormGroup<ConfigForm>({
-      cron: new FormControl('', {
+    this.updateConfigForm = fb.nonNullable.group({
+      cron: fb.nonNullable.control('', {
         validators: Validators.compose([
           Validators.required,
           notIdenticalTo('* * * * ? *'),
           isValidCron(),
           isNotTimeCron(),
         ]),
-        nonNullable: true,
       }),
-      to: new FormControl('', {
+      to: fb.nonNullable.control('', {
         validators: Validators.required,
-        nonNullable: true,
       }),
+      gpt3Prompt: fb.nonNullable.control(''),
+      message: fb.nonNullable.control(''),
     });
 
     this.cron$ = this.updateConfigForm.valueChanges.pipe(
@@ -114,11 +139,19 @@ export class ConfigComponent {
       this.updateConfigForm.setValue({
         cron: config.cron,
         to: config.to,
+        gpt3Prompt: config.gpt3Prompt,
+        message: config.message,
       });
     });
+
+    this.gp3Prompt = httpsCallable<Gpt3PromptRequest, string[]>(
+      fns,
+      'gpt3Prompt'
+    );
   }
 
   public async updateConfig(): Promise<void> {
+    console.log(this.updateConfigForm.valid, this.updateConfigForm.errors);
     if (!this.updateConfigForm.valid) {
       return;
     }
@@ -126,6 +159,8 @@ export class ConfigComponent {
     await updateDoc(this.whatsAppConfigDocumentReference, {
       cron: this.updateConfigForm.value.cron,
       to: this.updateConfigForm.value.to,
+      gpt3Prompt: this.updateConfigForm.value.gpt3Prompt,
+      message: this.updateConfigForm.value.message,
     });
   }
 
@@ -140,5 +175,17 @@ export class ConfigComponent {
         content: '',
       });
     });
+  }
+
+  public async createCompletions(): Promise<void> {
+    if (!this.updateConfigForm.value.gpt3Prompt) {
+      return;
+    }
+
+    const output = await this.gp3Prompt({
+      prompt: this.updateConfigForm.value.gpt3Prompt,
+    });
+
+    this.completions = output.data;
   }
 }

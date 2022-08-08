@@ -112,7 +112,9 @@
             </div>
 
             <div class="flex flex-col space-y-1">
-              <label class="text-xs font-bold">Recipient's Phone Number:</label>
+              <label class="text-xs font-bold"
+                >Recipient's WhatsApp Number:</label
+              >
 
               <select class="p-2 border rounded-md" formControlName="to">
                 <option
@@ -124,29 +126,53 @@
               </select>
             </div>
 
-            <button class="button-primary" type="submit">
-              <i class="fa-light fa-alarm-clock"></i> Update
-            </button>
-          </form>
-
-          <div class="-mx-10 py-4">
-            <hr />
-          </div>
-
-          <h2 class="font-bold">Options</h2>
-
-          <div class="flex space-x-2 items-center my-2">
-            <div
-              class="w-16 h-8 bg-black p-1 flex items-center rounded-full cursor-pointer transition-all"
-              (click)="toggle()"
-              [class.bg-green-500]="config.enabled"
-              [class.justify-end]="config.enabled"
-            >
-              <div class="bg-white h-6 w-6 rounded-full"></div>
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs font-bold">Scheduled messages:</label>
+              <div class="flex space-x-1">
+                <input
+                  formControlName="gpt3Prompt"
+                  class="p-2 border rounded-md flex-grow"
+                  type="text"
+                  placeholder="e.g. Write a good night message"
+                  autocomplete="off"
+                  data-lpignore="true"
+                  data-form-type="other"
+                />
+                <button
+                  class="button-primary"
+                  type="button"
+                  (click)="createCompletions()"
+                >
+                  <i class="fa-light fa-vial"></i>
+                </button>
+              </div>
+              <div>
+                <p
+                  class="text-xs italic"
+                  *ngFor="let completion of completions"
+                >
+                  "{{ completion }}"
+                </p>
+              </div>
             </div>
 
-            <div class="font-bold">Enable</div>
-          </div>
+            <div class="flex space-x-4">
+              <div class="flex space-x-2 items-center my-2">
+                <div
+                  class="w-16 h-8 bg-black p-1 flex items-center rounded-full cursor-pointer transition-all"
+                  (click)="toggle()"
+                  [class.bg-green-500]="config.enabled"
+                  [class.justify-end]="config.enabled"
+                >
+                  <div class="bg-white h-6 w-6 rounded-full"></div>
+                </div>
+              </div>
+
+              <button class="button-primary flex-grow" type="submit">
+                <i class="fa-light fa-alarm-clock"></i> Update
+              </button>
+            </div>
+          </form>
         </div>
       </app-modal>
     </div>

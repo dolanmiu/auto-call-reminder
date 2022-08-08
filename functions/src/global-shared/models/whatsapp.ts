@@ -56,8 +56,8 @@ export type WhatsAppAuthResponse =
 export interface WhatsAppConfig {
   readonly cron: string;
   readonly to: string;
-  readonly message?: string;
-  readonly gpt3Prompt?: string;
+  readonly message: string;
+  readonly gpt3Prompt: string;
   readonly enabled: boolean;
 }
 

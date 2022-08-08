@@ -98,6 +98,8 @@ export class DashboardComponent {
     const doc = await addDoc(this.whatsAppConfigCollectionReference, {
       cron: this.createConfigForm.value.cron,
       to: this.createConfigForm.value.to,
+      gpt3Prompt: '',
+      message: '',
       enabled: true,
     });
 
