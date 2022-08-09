@@ -59,6 +59,7 @@ export interface WhatsAppConfig {
   readonly message: string;
   readonly gpt3Prompt: string;
   readonly enabled: boolean;
+  readonly count: number;
 }
 
 export interface WhatsAppMessage<T> {

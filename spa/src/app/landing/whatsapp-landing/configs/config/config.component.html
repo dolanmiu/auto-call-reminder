@@ -48,8 +48,6 @@
             <hr />
           </div>
 
-          <h2 class="font-bold">Details</h2>
-
           <form
             class="flex flex-col space-y-4"
             [formGroup]="updateConfigForm"
@@ -175,6 +173,24 @@
                   "{{ completion }}"
                 </p>
               </div>
+            </div>
+
+            <div class="flex flex-col space-y-1">
+              <label class="text-xs font-bold">Times:</label>
+              <input
+                formControlName="count"
+                class="p-2 border rounded-md flex-grow"
+                type="number"
+                placeholder="count"
+                autocomplete="off"
+                data-lpignore="true"
+                data-form-type="other"
+              />
+              <p class="text-xs text-gray-400">
+                Enter the amount of times this message should be sent. "-1" will
+                mean it will be infinite. "1" will mean it will be sent once
+                etc.
+              </p>
             </div>
 
             <div class="flex space-x-4">

@@ -101,6 +101,7 @@ export class DashboardComponent {
       gpt3Prompt: '',
       message: '',
       enabled: true,
+      count: -1,
     });
 
     const whatsAppMessageCollectionReference =

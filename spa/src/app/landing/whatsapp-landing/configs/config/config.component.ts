@@ -48,6 +48,7 @@ interface ConfigForm {
   to: FormControl<string>;
   gpt3Prompt: FormControl<string>;
   message: FormControl<string>;
+  count: FormControl<number>;
 }
 
 @Component({
@@ -130,6 +131,7 @@ export class ConfigComponent {
       }),
       gpt3Prompt: fb.nonNullable.control(''),
       message: fb.nonNullable.control(''),
+      count: fb.nonNullable.control(0),
     });
 
     this.cron$ = this.updateConfigForm.valueChanges.pipe(
@@ -143,6 +145,7 @@ export class ConfigComponent {
         to: config.to,
         gpt3Prompt: config.gpt3Prompt,
         message: config.message,
+        count: config.count,
       });
     });
 

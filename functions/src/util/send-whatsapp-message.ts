@@ -14,7 +14,7 @@ export const sendWhatsAppMessageToChat = async (
   userUid: string,
   chatId: string,
   message: string,
-): Promise<void> => {
+): Promise<{ status: string }> => {
   const sessionUrl = getSessionUrl(userUid);
   const storageSessionUrl = `users/${userUid}/whatsapp/session.zip`;
   const zipFilePath = getZipFilePath(userUid);
@@ -36,7 +36,7 @@ export const sendWhatsAppMessageToChat = async (
     console.log("Extraction complete");
   } catch (e) {
     console.error("Can't find session", e);
-    return;
+    return { status: "failed" };
   }
 
   console.log(userUid);
@@ -63,21 +63,24 @@ export const sendWhatsAppMessageToChat = async (
     }),
   });
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     client.on("qr", async () => {
       await client.destroy();
-      reject(new Error("Require QR code"));
+      resolve({ status: "failed" });
     });
 
     client.on("ready", async () => {
       const chat = await client.getChatById(chatId);
       await chat.sendMessage(message);
-      resolve();
+      setTimeout(async () => {
+        await client.destroy();
+        resolve({ status: "completed" });
+      }, 10000);
     });
 
     client.on("auth_failure", async () => {
       await client.destroy();
-      reject(new Error("Failed to authenticate"));
+      resolve({ status: "failed" });
     });
 
     console.log("Initializing client");
