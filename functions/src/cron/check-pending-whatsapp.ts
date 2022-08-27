@@ -18,7 +18,7 @@ const getCronString = require("@darkeyedevelopers/natural-cron.js");
 
 export const checkPendingWhatsAppMessages = functions
   .runWith({ secrets: ["OPENAI_API_KEY"], memory: "4GB" })
-  .pubsub.schedule("every 5 minutes")
+  .pubsub.schedule("every 24 hours")
   .onRun(async () => {
     const users = await admin.firestore().collection(USER_COLLECTION).get();
 
